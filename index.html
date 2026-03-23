@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GapLens — DiveAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{--p1:#2D2A6E;--p2:#4A45A2;--p3:#7B6FB8;--p4:#9990CC;--p5:#C8C0E8;--p6:#E8E4F6;--p7:#F4F2FA;--w:#ffffff;--t1:#1a1a2e;--t2:#555580;--t3:#8888aa;--coral:#D85A30;--green:#1D9E75;--blue:#378ADD}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--t1);overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:0.8}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+@keyframes orbit{from{transform:rotate(0deg) translateX(180px) rotate(0deg)}to{transform:rotate(360deg) translateX(180px) rotate(-360deg)}}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:60px 24px 80px;background:var(--w)}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,var(--p6) 0%,transparent 70%);pointer-events:none}
+.orb{position:absolute;border-radius:50%;pointer-events:none}
+.orb1{width:300px;height:300px;background:radial-gradient(circle,rgba(75,69,162,0.06) 0%,transparent 70%);top:-60px;right:-80px;animation:float 8s ease-in-out infinite}
+.orb2{width:200px;height:200px;background:radial-gradient(circle,rgba(123,111,184,0.05) 0%,transparent 70%);bottom:80px;left:-40px;animation:float 6s ease-in-out infinite 1s}
+.orb3{width:150px;height:150px;background:radial-gradient(circle,rgba(200,192,232,0.08) 0%,transparent 70%);top:30%;right:10%;animation:float 7s ease-in-out infinite 2s}
+.logo-wrap{position:relative;margin-bottom:8px;animation:scaleIn 0.8s ease both}
+.logo-wrap img{width:220px;height:auto;display:block;filter:drop-shadow(0 8px 30px rgba(75,69,162,0.12))}
+.orbit-ring{position:absolute;top:50%;left:50%;width:360px;height:360px;margin:-180px 0 0 -180px;pointer-events:none}
+.orbit-dot{width:6px;height:6px;border-radius:50%;position:absolute;top:50%;left:50%;margin:-3px;animation:orbit 12s linear infinite}
+.orbit-dot:nth-child(1){background:var(--p4);animation-duration:12s}
+.orbit-dot:nth-child(2){background:var(--p5);animation-duration:18s;animation-delay:-4s}
+.orbit-dot:nth-child(3){background:var(--coral);opacity:0.4;animation-duration:15s;animation-delay:-8s}
+.presents{font-size:13px;font-weight:400;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;animation:fadeUp 0.6s ease 0.3s both}
+.title{font-size:clamp(48px,8vw,80px);font-weight:600;line-height:1;letter-spacing:-2px;margin-bottom:16px;animation:fadeUp 0.7s ease 0.4s both}
+.title .gap{color:var(--p2)}
+.title .lens{color:var(--t1)}
+.subtitle{font-size:clamp(16px,2.2vw,22px);font-weight:300;color:var(--t2);max-width:520px;text-align:center;line-height:1.5;margin-bottom:36px;animation:fadeUp 0.7s ease 0.55s both}
+.pills{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:48px;animation:fadeUp 0.7s ease 0.65s both}
+.pill{padding:8px 22px;border-radius:100px;font-size:13px;font-weight:500;letter-spacing:0.5px}
+.pill-g{background:#E8F5EE;color:#0F6E56;border:1px solid #b8e0cd}
+.pill-c{background:#FDF0EB;color:#993C1D;border:1px solid #f0c4a8}
+.pill-b{background:#EBF3FC;color:#0C447C;border:1px solid #a8cff0}
+.divider{width:60px;height:1px;background:var(--p5);margin-bottom:32px;animation:fadeUp 0.6s ease 0.75s both}
+.team{font-size:15px;font-weight:400;color:var(--t2);margin-bottom:8px;animation:fadeUp 0.6s ease 0.8s both}
+.team span{margin:0 6px;color:var(--p4)}
+.course{font-size:12px;font-weight:500;color:var(--t3);letter-spacing:1px;animation:fadeUp 0.6s ease 0.9s both}
+.features{padding:80px 24px;background:var(--p7)}
+.features-inner{max-width:900px;margin:0 auto}
+.features h2{font-size:32px;font-weight:500;color:var(--t1);text-align:center;margin-bottom:12px}
+.features .sub{font-size:15px;color:var(--t2);text-align:center;margin-bottom:48px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.card{background:var(--w);border-radius:16px;padding:32px 28px;border:1px solid var(--p6);transition:transform 0.3s ease,box-shadow 0.3s ease}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(75,69,162,0.08)}
+.card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
+.card-icon.ic-g{background:#E8F5EE}
+.card-icon.ic-c{background:#FDF0EB}
+.card-icon.ic-b{background:#EBF3FC}
+.card-icon.ic-p{background:var(--p6)}
+.card h3{font-size:17px;font-weight:500;color:var(--t1);margin-bottom:8px}
+.card p{font-size:13px;color:var(--t2);line-height:1.6}
+.card-icon svg{width:24px;height:24px}
+.how{padding:80px 24px;background:var(--w)}
+.how-inner{max-width:760px;margin:0 auto;text-align:center}
+.how h2{font-size:32px;font-weight:500;color:var(--t1);margin-bottom:12px}
+.how .sub{font-size:15px;color:var(--t2);margin-bottom:48px}
+.steps{display:flex;gap:0;align-items:flex-start;justify-content:center;flex-wrap:wrap;position:relative}
+.step{flex:1;min-width:140px;max-width:170px;text-align:center;position:relative;padding:0 8px}
+.step-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:var(--w);margin:0 auto 12px;position:relative;z-index:1}
+.step-num.n1{background:var(--p4)}
+.step-num.n2{background:var(--blue)}
+.step-num.n3{background:var(--coral)}
+.step-num.n4{background:var(--green)}
+.step h4{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:4px}
+.step p{font-size:12px;color:var(--t3);line-height:1.5}
+.step-arrow{color:var(--p5);font-size:20px;align-self:center;margin-top:-20px;padding:0 2px}
+.cta{padding:80px 24px;text-align:center;background:var(--p7)}
+.cta h2{font-size:28px;font-weight:500;color:var(--t1);margin-bottom:8px}
+.cta p{font-size:15px;color:var(--t2);margin-bottom:32px}
+.cta-btn{display:inline-block;padding:14px 40px;border-radius:100px;background:var(--p2);color:var(--w);font-size:16px;font-weight:500;text-decoration:none;transition:background 0.2s,transform 0.2s;border:none;cursor:pointer}
+.cta-btn:hover{background:var(--p1);transform:translateY(-2px)}
+.footer{padding:32px 24px;text-align:center;font-size:11px;color:var(--t3);border-top:1px solid var(--p6)}
+.footer a{color:var(--p3);text-decoration:none}
+[data-anim]{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+[data-anim].vis{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="logo-wrap">
+    <img src="logo.png" alt="GapLens Logo">
+    <div class="orbit-ring">
+      <div class="orbit-dot"></div>
+      <div class="orbit-dot"></div>
+      <div class="orbit-dot"></div>
+    </div>
+  </div>
+  <div class="presents">DiveAI presents</div>
+  <div class="title"><span class="gap">Gap</span><span class="lens">Lens</span></div>
+  <div class="subtitle">AI-Powered Requirement Gap Detection</div>
+  <div class="pills">
+    <span class="pill pill-g">Local</span>
+    <span class="pill pill-c">Transparent</span>
+    <span class="pill pill-b">AI-Enhanced</span>
+  </div>
+  <div class="divider"></div>
+  <div class="team">Wenyan Yang <span>&middot;</span> Tom&aacute;&scaron; Janovec <span>&middot;</span> Samantha Bavautdin</div>
+  <div class="course">COMP.CS.530-2025-2026-2</div>
+</section>
+
+<section class="features">
+  <div class="features-inner">
+    <h2 data-anim>Why GapLens?</h2>
+    <p class="sub" data-anim>We keep AI's brain but ditch its mouth. No generation. No cloud. No hallucinations.</p>
+    <div class="cards">
+      <div class="card" data-anim>
+        <div class="card-icon ic-g"><svg viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>100% local</h3>
+        <p>Your data never leaves your machine. Zero telemetry. No cloud APIs. Deploy in air-gapped environments.</p>
+      </div>
+      <div class="card" data-anim>
+        <div class="card-icon ic-c"><svg viewBox="0 0 24 24" fill="none" stroke="#993C1D" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h3>Transparent</h3>
+        <p>Every gap score is auditable. Visual heatmaps and ranked findings explain exactly why each gap was flagged.</p>
+      </div>
+      <div class="card" data-anim>
+        <div class="card-icon ic-b"><svg viewBox="0 0 24 24" fill="none" stroke="#0C447C" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+        <h3>AI-enhanced</h3>
+        <p>LLM embeddings provide deep semantic understanding. Geometric analysis on the full 1024-dimension space.</p>
+      </div>
+      <div class="card" data-anim>
+        <div class="card-icon ic-p"><svg viewBox="0 0 24 24" fill="none" stroke="#4A45A2" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h2M7 11h4"/></svg></div>
+        <h3>2-second analysis</h3>
+        <p>CPU-only inference. No GPU required. Analyse your entire requirements spec in under two seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="how-inner">
+    <h2 data-anim>How it works</h2>
+    <p class="sub" data-anim>Four steps from raw documents to ranked gap report.</p>
+    <div class="steps" data-anim>
+      <div class="step">
+        <div class="step-num n1">1</div>
+        <h4>Feed your docs</h4>
+        <p>Upload requirements in any format</p>
+      </div>
+      <div class="step-arrow">&rarr;</div>
+      <div class="step">
+        <div class="step-num n2">2</div>
+        <h4>AI embeddings</h4>
+        <p>Map to 1024D semantic space</p>
+      </div>
+      <div class="step-arrow">&rarr;</div>
+      <div class="step">
+        <div class="step-num n3">3</div>
+        <h4>Find gaps</h4>
+        <p>k-NN geometry detects blind spots</p>
+      </div>
+      <div class="step-arrow">&rarr;</div>
+      <div class="step">
+        <div class="step-num n4">4</div>
+        <h4>Ranked report</h4>
+        <p>Prioritised findings with examples</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2 data-anim>Stop guessing. Start measuring.</h2>
+  <p data-anim>Requirement gap detection that actually works.</p>
+  <button class="cta-btn" data-anim>Try GapLens</button>
+</section>
+
+<footer class="footer">
+  <a href="#">DiveAI</a> &middot; GapLens &middot; COMP.CS.530-2025-2026-2
+</footer>
+
+<script>
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:0.15});
+document.querySelectorAll('[data-anim]').forEach(function(el,i){el.style.transitionDelay=(i%4)*0.1+'s';obs.observe(el)});
+</script>
+</body>
+</html>
