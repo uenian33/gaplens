@@ -6,11 +6,57 @@
 <title>GapLens — DiveAI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <style>
-:root{--p1:#2D2A6E;--p2:#4A45A2;--p3:#7B6FB8;--p4:#9990CC;--p5:#C8C0E8;--p6:#E8E4F6;--p7:#F4F2FA;--w:#ffffff;--t1:#1a1a2e;--t2:#555580;--t3:#8888aa;--coral:#D85A30;--green:#1D9E75;--blue:#378ADD}
+:root{
+  --p1:#2D2A6E;--p2:#4A45A2;--p3:#7B6FB8;--p4:#9990CC;--p5:#C8C0E8;--p6:#E8E4F6;--p7:#F4F2FA;
+  --w:#ffffff;--t1:#1a1a2e;--t2:#555580;--t3:#8888aa;
+  --coral:#D85A30;--green:#1D9E75;--blue:#378ADD;--red:#A32D2D;
+  --f:'DM Sans',system-ui,sans-serif;
+  --r:8px;--rl:12px;
+  /* gaplens vars mapped to unified palette */
+  --bg1:#ffffff;--bg2:#F4F2FA;--bg3:#E8E4F6;
+  --b3:rgba(45,42,110,0.08);--b2:rgba(45,42,110,0.15);
+  --ti:#4A45A2;--bgi:#E8E4F6;--bi:#9990CC;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--t1);overflow-x:hidden}
+body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden}
+
+/* ─── TOPBAR ─── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:56px;
+  background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--p6);
+  transition:box-shadow 0.3s;
+}
+.topbar.scrolled{box-shadow:0 2px 24px rgba(45,42,110,0.08)}
+.topbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.topbar-brand img{height:32px;width:auto}
+.topbar-brand span{font-size:18px;font-weight:600;letter-spacing:-0.5px}
+.topbar-brand .gap-t{color:var(--p2)}
+.topbar-brand .lens-t{color:var(--t1)}
+.topbar-nav{display:flex;align-items:center;gap:8px}
+.topbar-nav a{
+  padding:7px 18px;border-radius:100px;font-size:13px;font-weight:500;
+  text-decoration:none;transition:all 0.2s;letter-spacing:0.2px;
+  position:relative;
+}
+.topbar-nav a.nav-link{color:var(--t2);border:1px solid transparent}
+.topbar-nav a.nav-link:hover{color:var(--p2);background:var(--p7)}
+.topbar-nav a.nav-primary{background:var(--p2);color:var(--w);border:1px solid var(--p2)}
+.topbar-nav a.nav-primary:hover{background:var(--p1);transform:translateY(-1px)}
+.coming-badge{
+  position:absolute;top:-7px;right:-6px;
+  padding:1px 6px;border-radius:8px;
+  font-size:9px;font-weight:600;letter-spacing:0.5px;
+  background:var(--coral);color:var(--w);
+  pointer-events:none;
+}
+
+/* ─── ANIMATIONS ─── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
@@ -18,7 +64,14 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--
 @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
 @keyframes scaleIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
 @keyframes orbit{from{transform:rotate(0deg) translateX(180px) rotate(0deg)}to{transform:rotate(360deg) translateX(180px) rotate(-360deg)}}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:60px 24px 80px;background:var(--w)}
+@keyframes sIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-4deg)}40%{transform:rotate(4deg)}60%{transform:rotate(-2deg)}80%{transform:rotate(2deg)}}
+@keyframes popIn{0%{transform:scale(0) rotate(-10deg)}70%{transform:scale(1.1) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes slideL{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pulseBtn{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:80px 24px 80px;background:var(--w)}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,var(--p6) 0%,transparent 70%);pointer-events:none}
 .orb{position:absolute;border-radius:50%;pointer-events:none}
 .orb1{width:300px;height:300px;background:radial-gradient(circle,rgba(75,69,162,0.06) 0%,transparent 70%);top:-60px;right:-80px;animation:float 8s ease-in-out infinite}
@@ -35,22 +88,30 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--
 .title{font-size:clamp(48px,8vw,80px);font-weight:600;line-height:1;letter-spacing:-2px;margin-bottom:16px;animation:fadeUp 0.7s ease 0.4s both}
 .title .gap{color:var(--p2)}
 .title .lens{color:var(--t1)}
-.subtitle{font-size:clamp(16px,2.2vw,22px);font-weight:300;color:var(--t2);max-width:520px;text-align:center;line-height:1.5;margin-bottom:36px;animation:fadeUp 0.7s ease 0.55s both}
+.subtitle{font-size:clamp(16px,2.2vw,22px);font-weight:300;color:var(--t2);max-width:520px;text-align:center;line-height:1.5;margin-bottom:24px;animation:fadeUp 0.7s ease 0.55s both}
+.hero-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;animation:fadeUp 0.7s ease 0.6s both}
+.hero-link{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:100px;font-size:14px;font-weight:500;text-decoration:none;transition:all 0.2s;cursor:default}
+.hero-link-primary{background:var(--p2);color:var(--w);border:1.5px solid var(--p2)}
+.hero-link-outline{background:var(--w);color:var(--p2);border:1.5px solid var(--p5)}
+.hero-link .soon-tag{font-size:10px;font-weight:600;letter-spacing:0.5px;padding:2px 8px;border-radius:6px;background:rgba(216,90,48,0.12);color:var(--coral)}
 .pills{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:48px;animation:fadeUp 0.7s ease 0.65s both}
-.pill{padding:8px 22px;border-radius:100px;font-size:13px;font-weight:500;letter-spacing:0.5px}
+.pill{display:inline-block;padding:8px 22px;border-radius:100px;font-size:13px;font-weight:500;letter-spacing:0.5px}
 .pill-g{background:#E8F5EE;color:#0F6E56;border:1px solid #b8e0cd}
 .pill-c{background:#FDF0EB;color:#993C1D;border:1px solid #f0c4a8}
 .pill-b{background:#EBF3FC;color:#0C447C;border:1px solid #a8cff0}
+.pill-r{background:#FCEBEB;color:#A32D2D}
 .divider{width:60px;height:1px;background:var(--p5);margin-bottom:32px;animation:fadeUp 0.6s ease 0.75s both}
 .team{font-size:15px;font-weight:400;color:var(--t2);margin-bottom:8px;animation:fadeUp 0.6s ease 0.8s both}
 .team span{margin:0 6px;color:var(--p4)}
 .course{font-size:12px;font-weight:500;color:var(--t3);letter-spacing:1px;animation:fadeUp 0.6s ease 0.9s both}
+
+/* ─── FEATURES ─── */
 .features{padding:80px 24px;background:var(--p7)}
-.features-inner{max-width:900px;margin:0 auto}
+.features-inner{max-width:1100px;margin:0 auto}
 .features h2{font-size:32px;font-weight:500;color:var(--t1);text-align:center;margin-bottom:12px}
 .features .sub{font-size:15px;color:var(--t2);text-align:center;margin-bottom:48px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-.card{background:var(--w);border-radius:16px;padding:32px 28px;border:1px solid var(--p6);transition:transform 0.3s ease,box-shadow 0.3s ease}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{background:var(--w);border-radius:16px;padding:24px 20px;border:1px solid var(--p6);transition:transform 0.3s ease,box-shadow 0.3s ease}
 .card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(75,69,162,0.08)}
 .card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
 .card-icon.ic-g{background:#E8F5EE}
@@ -60,6 +121,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--
 .card h3{font-size:17px;font-weight:500;color:var(--t1);margin-bottom:8px}
 .card p{font-size:13px;color:var(--t2);line-height:1.6}
 .card-icon svg{width:24px;height:24px}
+
+/* ─── HOW ─── */
 .how{padding:80px 24px;background:var(--w)}
 .how-inner{max-width:760px;margin:0 auto;text-align:center}
 .how h2{font-size:32px;font-weight:500;color:var(--t1);margin-bottom:12px}
@@ -74,20 +137,106 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--
 .step h4{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:4px}
 .step p{font-size:12px;color:var(--t3);line-height:1.5}
 .step-arrow{color:var(--p5);font-size:20px;align-self:center;margin-top:-20px;padding:0 2px}
-.cta{padding:80px 24px;text-align:center;background:var(--p7)}
-.cta h2{font-size:28px;font-weight:500;color:var(--t1);margin-bottom:8px}
-.cta p{font-size:15px;color:var(--t2);margin-bottom:32px}
-.cta-btn{display:inline-block;padding:14px 40px;border-radius:100px;background:var(--p2);color:var(--w);font-size:16px;font-weight:500;text-decoration:none;transition:background 0.2s,transform 0.2s;border:none;cursor:pointer}
+
+/* ─── PRESENTATION SECTION ─── */
+.pres-section{padding:80px 24px;background:var(--p7)}
+.pres-section-inner{max-width:900px;margin:0 auto}
+.pres-section h2{font-size:32px;font-weight:500;color:var(--t1);text-align:center;margin-bottom:8px}
+.pres-section .sub{font-size:15px;color:var(--t2);text-align:center;margin-bottom:40px}
+
+/* ─── PRESENTATION (from gaplens) ─── */
+.P{position:relative;border:1px solid var(--b3);border-radius:16px;overflow:hidden;background:var(--bg1);box-shadow:0 8px 40px rgba(45,42,110,0.06)}
+.slide{display:none;min-height:500px;position:relative;overflow:hidden;padding:40px 24px}
+.slide.on{display:flex;flex-direction:column;align-items:center;justify-content:center;animation:sIn 0.5s ease both}
+.big{font-size:30px;font-weight:500;text-align:center;line-height:1.35;color:var(--t1);max-width:580px}
+.med{font-size:20px;font-weight:500;text-align:center;color:var(--t1);max-width:520px;line-height:1.5}
+.pres-sub{font-size:15px;color:var(--t2);text-align:center;max-width:500px;line-height:1.6;margin-top:10px}
+.accent{color:#D85A30}.good{color:#0F6E56}.bad{color:#A32D2D}.blu{color:var(--p2)}
+.card-row{display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;justify-content:center}
+.fcard{background:var(--bg2);border-radius:var(--rl);padding:18px 22px;width:175px;text-align:center}
+.fcard .ft{font-size:15px;font-weight:500;color:var(--t1)}.fcard .fs{font-size:12px;color:var(--t2);margin-top:3px;line-height:1.4}
+.scene-art{margin:18px 0}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid var(--b3);background:var(--bg2);border-radius:0 0 16px 16px}
+.nav button{background:var(--w);border:1px solid var(--b2);border-radius:var(--r);padding:8px 20px;font-size:14px;color:var(--t1);cursor:pointer;font-family:var(--f);transition:all 0.15s}
+.nav button:hover{background:var(--p7);border-color:var(--p4)}
+.nav button:disabled{opacity:0.2;cursor:default}
+.dots{display:flex;gap:6px}
+.dd{width:9px;height:9px;border-radius:50%;background:var(--b2);cursor:pointer;transition:all 0.3s}
+.dd.on{background:var(--p2);transform:scale(1.3)}
+.sn{font-size:12px;color:var(--t3);text-align:center;margin-top:3px}
+.abtn{position:absolute;top:14px;right:14px;background:var(--bgi);border:1px solid var(--bi);border-radius:var(--r);padding:6px 14px;font-size:13px;color:var(--ti);cursor:pointer;font-family:var(--f);z-index:5;transition:all 0.15s}
+.abtn:hover{background:var(--p5);color:var(--p1)}
+.cv3{width:100%;height:420px;display:block;cursor:grab;border-radius:0}
+.cv3:active{cursor:grabbing}
+.s3ov{position:absolute;top:0;left:0;right:0;pointer-events:none;padding:14px 18px;z-index:2}
+.s3ov h2{font-size:18px;font-weight:500;color:var(--t1);margin:0 0 3px;text-shadow:0 1px 10px var(--bg1),0 0 30px var(--bg1)}
+.s3ov p{font-size:13px;color:var(--t2);margin:0;max-width:500px;text-shadow:0 1px 8px var(--bg1),0 0 20px var(--bg1)}
+.s3leg{position:absolute;bottom:8px;left:14px;display:flex;gap:12px;pointer-events:none;z-index:3;flex-wrap:wrap}
+.s3leg span{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:3px;text-shadow:0 0 8px var(--bg1)}
+.s3leg i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.s3leg i.dia{transform:rotate(45deg);border-radius:1px}
+.s3hint{position:absolute;top:56px;right:14px;font-size:11px;color:var(--t3);pointer-events:none;z-index:2;text-shadow:0 0 8px var(--bg1)}
+.eqbar{background:var(--bg2);border-top:1px solid var(--b3);padding:10px 18px;text-align:center}
+.eqbar .katex{font-size:14px}
+.dual-wrap{display:flex;gap:8px;padding:0 8px}
+.dual-panel{flex:1;min-width:0;position:relative}
+.dual-panel canvas{width:100%;height:250px;display:block;border-radius:var(--r);cursor:grab;background:var(--bg2)}
+.dual-panel canvas:active{cursor:grabbing}
+.dual-label{text-align:center;padding:8px 6px 4px}
+.dual-label h3{font-size:14px;font-weight:500;margin:0 0 2px;color:var(--t1)}
+.dual-label p{font-size:11px;color:var(--t2);margin:0}
+.dual-verdict{text-align:center;padding:6px 10px;border-radius:var(--r);margin:6px 12px 0;font-size:13px;font-weight:500}
+.dual-legend{display:flex;gap:10px;justify-content:center;padding:8px 0 0;flex-wrap:wrap}
+.dual-legend span{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:3px}
+.dual-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dual-legend i.dia{transform:rotate(45deg);border-radius:1px}
+
+/* ─── CTA ─── */
+.cta{padding:80px 24px;text-align:center;background:var(--w);position:relative}
+.cta::before{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:radial-gradient(ellipse 80% 100% at 50% 100%,var(--p6) 0%,transparent 70%);pointer-events:none}
+.cta h2{font-size:28px;font-weight:500;color:var(--t1);margin-bottom:8px;position:relative}
+.cta p{font-size:15px;color:var(--t2);margin-bottom:32px;position:relative}
+.cta-btn{display:inline-block;padding:14px 40px;border-radius:100px;background:var(--p2);color:var(--w);font-size:16px;font-weight:500;text-decoration:none;transition:background 0.2s,transform 0.2s;border:none;cursor:pointer;position:relative}
 .cta-btn:hover{background:var(--p1);transform:translateY(-2px)}
+
+/* ─── FOOTER ─── */
 .footer{padding:32px 24px;text-align:center;font-size:11px;color:var(--t3);border-top:1px solid var(--p6)}
 .footer a{color:var(--p3);text-decoration:none}
+
+/* ─── SCROLL ANIM ─── */
 [data-anim]{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
 [data-anim].vis{opacity:1;transform:none}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .cards{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+}
+@media(max-width:640px){
+  .topbar{padding:0 16px}
+  .topbar-nav a{padding:6px 12px;font-size:12px}
+  .dual-wrap{flex-direction:column}
+  .cards{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
 
-<section class="hero">
+<!-- ─── TOPBAR ─── -->
+<nav class="topbar" id="topbar">
+  <a class="topbar-brand" href="#">
+    <img src="logo.png" alt="GapLens">
+    <span><span class="gap-t">Gap</span><span class="lens-t">Lens</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="#overview" class="nav-link">Overview</a>
+    <a href="#demo" class="nav-link">How it works</a>
+    <a href="#" class="nav-link" onclick="event.preventDefault();alert('Report coming soon!')">Report <span class="coming-badge">SOON</span></a>
+    <a href="#" class="nav-primary" onclick="event.preventDefault();alert('Source code coming soon!')">Code <span class="coming-badge">SOON</span></a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="overview">
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
@@ -102,6 +251,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--
   <div class="presents">DiveAI presents</div>
   <div class="title"><span class="gap">Gap</span><span class="lens">Lens</span></div>
   <div class="subtitle">AI-Powered Requirement Gap Detection</div>
+  <div class="hero-links">
+    <a class="hero-link hero-link-primary" href="#">Source Code <span class="soon-tag">COMING SOON</span></a>
+    <a class="hero-link hero-link-outline" href="#">Full Report <span class="soon-tag">COMING SOON</span></a>
+  </div>
   <div class="pills">
     <span class="pill pill-g">Local</span>
     <span class="pill pill-c">Transparent</span>
@@ -112,80 +265,433 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--
   <div class="course">COMP.CS.530-2025-2026-2</div>
 </section>
 
-<section class="features">
-  <div class="features-inner">
-    <h2 data-anim>Why GapLens?</h2>
-    <p class="sub" data-anim>We keep AI's brain but ditch its mouth. No generation. No cloud. No hallucinations.</p>
-    <div class="cards">
-      <div class="card" data-anim>
-        <div class="card-icon ic-g"><svg viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <h3>100% local</h3>
-        <p>Your data never leaves your machine. Zero telemetry. No cloud APIs. Deploy in air-gapped environments.</p>
-      </div>
-      <div class="card" data-anim>
-        <div class="card-icon ic-c"><svg viewBox="0 0 24 24" fill="none" stroke="#993C1D" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-        <h3>Transparent</h3>
-        <p>Every gap score is auditable. Visual heatmaps and ranked findings explain exactly why each gap was flagged.</p>
-      </div>
-      <div class="card" data-anim>
-        <div class="card-icon ic-b"><svg viewBox="0 0 24 24" fill="none" stroke="#0C447C" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
-        <h3>AI-enhanced</h3>
-        <p>LLM embeddings provide deep semantic understanding. Geometric analysis on the full 1024-dimension space.</p>
-      </div>
-      <div class="card" data-anim>
-        <div class="card-icon ic-p"><svg viewBox="0 0 24 24" fill="none" stroke="#4A45A2" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h2M7 11h4"/></svg></div>
-        <h3>2-second analysis</h3>
-        <p>CPU-only inference. No GPU required. Analyse your entire requirements spec in under two seconds.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section class="how">
-  <div class="how-inner">
+<!-- ─── INTERACTIVE PRESENTATION ─── -->
+<section class="pres-section" id="demo">
+  <div class="pres-section-inner">
     <h2 data-anim>How it works</h2>
-    <p class="sub" data-anim>Four steps from raw documents to ranked gap report.</p>
-    <div class="steps" data-anim>
-      <div class="step">
-        <div class="step-num n1">1</div>
-        <h4>Feed your docs</h4>
-        <p>Upload requirements in any format</p>
+    <p class="sub" data-anim>Walk through the full story — from the problem to the solution — in our interactive slide deck.</p>
+
+    <div class="P" data-anim>
+      <button class="abtn" id="ab" onclick="togA()">&#9654; Play</button>
+
+      <div class="slide on" id="s0">
+        <div class="big">"Did we cover<br><span class="accent">all</span> the requirements?"</div>
+        <div class="pres-sub" style="margin-top:12px">The question that keeps every PM, BA, and engineering lead up at night.</div>
+        <div class="scene-art">
+          <svg width="420" height="170" viewBox="0 0 420 170">
+            <g style="animation:float 3s ease-in-out infinite">
+              <circle cx="100" cy="75" r="36" fill="#FFD93D" stroke="#E8B730" stroke-width="1.5"/>
+              <circle cx="100" cy="75" r="34" fill="#FFD93D"/>
+              <ellipse cx="87" cy="68" rx="5" ry="6" fill="#664400"/>
+              <ellipse cx="113" cy="68" rx="5" ry="6" fill="#664400"/>
+              <ellipse cx="87" cy="67" rx="5" ry="3.5" fill="#fff" opacity="0.3"/>
+              <ellipse cx="113" cy="67" rx="5" ry="3.5" fill="#fff" opacity="0.3"/>
+              <path d="M78 58 Q83 53 90 56" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+              <path d="M110 56 Q117 53 122 58" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+              <path d="M88 88 Q94 83 100 86 Q106 83 112 88" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="76" cy="82" r="5" fill="#FF9F43" opacity="0.3"/>
+              <circle cx="124" cy="82" r="5" fill="#FF9F43" opacity="0.3"/>
+              <path d="M90 46 L94 42 L98 46" fill="none" stroke="#E8B730" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <path d="M102 44 L106 40 L110 44" fill="none" stroke="#E8B730" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <text x="100" y="132" text-anchor="middle" style="font-size:12px;fill:var(--t3)">PM at 3am</text>
+            </g>
+            <g style="animation:float 2.5s ease-in-out infinite 0.3s">
+              <path d="M150 20 Q150 5 170 5 L280 5 Q300 5 300 20 L300 95 Q300 110 280 110 L180 110 L160 125 L165 110 L170 110 Q150 110 150 95 Z" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+              <line x1="170" y1="25" x2="205" y2="25" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="165" y="22" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
+              <path d="M167 26 L169 28 L172 24" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="170" y1="40" x2="220" y2="40" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="165" y="37" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
+              <path d="M167 41 L169 43 L172 39" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="170" y1="55" x2="195" y2="55" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="165" y="52" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
+              <path d="M167 56 L169 58 L172 54" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="170" y1="72" x2="210" y2="72" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 3"/>
+              <rect x="165" y="69" width="8" height="8" rx="2" fill="none" stroke="#E24B4A" stroke-width="1.2"/>
+              <line x1="170" y1="88" x2="200" y2="88" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 3"/>
+              <rect x="165" y="85" width="8" height="8" rx="2" fill="none" stroke="#E24B4A" stroke-width="1.2"/>
+              <text x="240" y="76" style="font-size:20px;fill:#E24B4A;opacity:0.7">?</text>
+              <text x="260" y="60" style="font-size:14px;fill:#E24B4A;opacity:0.4">?</text>
+              <text x="275" y="90" style="font-size:18px;fill:#E24B4A;opacity:0.5">?</text>
+            </g>
+            <g style="animation:shake 2.5s ease-in-out infinite 0.8s">
+              <text x="350" y="50" text-anchor="middle" style="font-size:52px;fill:#E24B4A;opacity:0.8">?</text>
+              <text x="380" y="80" text-anchor="middle" style="font-size:32px;fill:#E24B4A;opacity:0.4">?</text>
+              <text x="340" y="100" text-anchor="middle" style="font-size:24px;fill:#E24B4A;opacity:0.25">?</text>
+            </g>
+          </svg>
+        </div>
       </div>
-      <div class="step-arrow">&rarr;</div>
-      <div class="step">
-        <div class="step-num n2">2</div>
-        <h4>AI embeddings</h4>
-        <p>Map to 1024D semantic space</p>
+
+      <div class="slide" id="s1">
+        <div class="big">The old way:<br><span class="bad">painful</span></div>
+        <div class="pres-sub" style="margin-top:12px">Re-interviewing stakeholders is expensive. Manually cross-checking historical docs? Soul-crushing.</div>
+        <div class="scene-art" style="margin-top:8px">
+          <svg width="480" height="200" viewBox="0 0 480 200">
+            <g><rect x="20" y="30" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="28" y="40" width="54" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="50" width="40" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="60" width="48" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="70" width="35" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="80" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="90" width="44" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="100" width="38" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><text x="55" y="136" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 1</text></g>
+            <g transform="translate(80,0)" style="opacity:0.7"><rect x="20" y="35" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="28" y="45" width="54" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="55" width="42" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="65" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="75" width="36" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><text x="55" y="141" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 2</text></g>
+            <g transform="translate(140,0)" style="opacity:0.5"><rect x="20" y="32" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="55" y="82" text-anchor="middle" style="font-size:14px;fill:var(--t3)">...</text><text x="55" y="138" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 847</text></g>
+            <g transform="translate(248,25)">
+              <circle cx="30" cy="38" r="26" fill="#FFD93D" stroke="#E8B730" stroke-width="1.5"/>
+              <circle cx="30" cy="38" r="24" fill="#FFD93D"/>
+              <path d="M20 32 Q22 30 26 33" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+              <path d="M34 33 Q38 30 40 32" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+              <ellipse cx="23" cy="35" rx="3.5" ry="1.5" fill="#664400"/>
+              <ellipse cx="37" cy="35" rx="3.5" ry="1.5" fill="#664400"/>
+              <path d="M22 47 L38 47" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="14" cy="46" r="4" fill="#FF9F43" opacity="0.3"/>
+              <circle cx="46" cy="46" r="4" fill="#FF9F43" opacity="0.3"/>
+              <path d="M44 22 Q46 16 48 22" fill="#54A0FF" opacity="0.5"/>
+              <ellipse cx="47" cy="22" rx="2.5" ry="3.5" fill="#54A0FF" opacity="0.4"/>
+              <text x="30" y="82" text-anchor="middle" style="font-size:11px;fill:var(--t3)">You, reading</text>
+              <text x="30" y="95" text-anchor="middle" style="font-size:11px;fill:var(--t3)">every single one</text>
+            </g>
+            <g transform="translate(340,10)"><rect x="0" y="20" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 0.5s both"/><text x="65" y="42" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 0.8s both">Week 1: still reading</text><rect x="0" y="66" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 1.2s both"/><text x="65" y="88" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 1.5s both">Week 2: eyes hurt</text><rect x="0" y="112" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 1.9s both"/><text x="65" y="134" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 2.2s both">Week 3: "good enough"</text></g>
+            <text x="240" y="190" text-anchor="middle" style="font-size:13px;fill:var(--t3);animation:fadeIn 0.5s ease 2.8s both">Spoiler: it wasn't good enough.</text>
+          </svg>
+        </div>
       </div>
-      <div class="step-arrow">&rarr;</div>
-      <div class="step">
-        <div class="step-num n3">3</div>
-        <h4>Find gaps</h4>
-        <p>k-NN geometry detects blind spots</p>
+
+      <div class="slide" id="s2">
+        <div class="big">"Just use AI!"<br><span class="bad">...not so fast</span></div>
+        <div class="pres-sub" style="margin-top:10px">LLM agents sound great until you hit reality:</div>
+        <div class="card-row" style="margin-top:16px">
+          <div class="fcard" style="animation:slideL 0.4s ease 0.2s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><text x="20" y="26" text-anchor="middle" style="font-size:18px;fill:#E24B4A">!</text></svg><div class="ft" style="color:#A32D2D">Hallucinations</div><div class="fs">Makes up requirements that don't exist</div></div>
+          <div class="fcard" style="animation:slideL 0.4s ease 0.4s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><path d="M14 16 L26 28 M26 16 L14 28" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/></svg><div class="ft" style="color:#A32D2D">Data leakage</div><div class="fs">Your specs go to someone else's cloud</div></div>
+          <div class="fcard" style="animation:slideL 0.4s ease 0.6s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><path d="M12 24 L20 16 L28 24" fill="none" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/><line x1="20" y1="16" x2="20" y2="30" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/></svg><div class="ft" style="color:#A32D2D">Heavy infra</div><div class="fs">GPU servers just to check your docs</div></div>
+        </div>
       </div>
-      <div class="step-arrow">&rarr;</div>
-      <div class="step">
-        <div class="step-num n4">4</div>
-        <h4>Ranked report</h4>
-        <p>Prioritised findings with examples</p>
+
+      <div class="slide" id="s3">
+        <div class="big">What if we used AI<br><span class="blu">the smart way?</span></div>
+        <div class="scene-art" style="margin-top:16px">
+          <svg width="500" height="200" viewBox="0 0 500 200">
+            <g style="animation:popIn 0.4s ease 0.3s both">
+              <rect x="20" y="10" width="140" height="120" rx="14" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/>
+              <rect x="55" y="28" width="70" height="50" rx="8" fill="#E24B4A" opacity="0.12"/>
+              <rect x="65" y="38" width="50" height="8" rx="3" fill="#E24B4A" opacity="0.3"/>
+              <rect x="65" y="50" width="35" height="8" rx="3" fill="#E24B4A" opacity="0.3"/>
+              <rect x="65" y="62" width="45" height="8" rx="3" fill="#E24B4A" opacity="0.3"/>
+              <path d="M58 30 L62 34 M58 34 L62 30" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="30" y1="20" x2="150" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+              <line x1="150" y1="20" x2="30" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+              <text x="90" y="100" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#A32D2D">Generation</text>
+              <text x="90" y="114" text-anchor="middle" style="font-size:10px;fill:#A32D2D;opacity:0.7">hallucinations</text>
+            </g>
+            <g style="animation:popIn 0.4s ease 0.5s both">
+              <rect x="180" y="10" width="140" height="120" rx="14" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/>
+              <circle cx="250" cy="48" r="20" fill="#E24B4A" opacity="0.1" stroke="#E24B4A" stroke-width="0.5"/>
+              <path d="M240 42 L245 48 L260 35" fill="none" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="235" y1="55" x2="265" y2="55" stroke="#E24B4A" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
+              <path d="M238 60 Q250 68 262 60" fill="none" stroke="#E24B4A" stroke-width="1" opacity="0.3"/>
+              <line x1="190" y1="20" x2="310" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+              <line x1="310" y1="20" x2="190" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+              <text x="250" y="100" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#A32D2D">Cloud APIs</text>
+              <text x="250" y="114" text-anchor="middle" style="font-size:10px;fill:#A32D2D;opacity:0.7">data leakage</text>
+            </g>
+            <g style="animation:popIn 0.5s ease 0.8s both">
+              <rect x="340" y="10" width="140" height="120" rx="14" fill="#EBF3FC" stroke="#378ADD" stroke-width="1"/>
+              <circle cx="410" cy="42" r="18" fill="#378ADD" opacity="0.12"/>
+              <circle cx="403" cy="38" r="3" fill="#378ADD" opacity="0.5"/>
+              <circle cx="417" cy="38" r="3" fill="#378ADD" opacity="0.5"/>
+              <circle cx="410" cy="48" r="3" fill="#378ADD" opacity="0.4"/>
+              <path d="M398 34 Q410 28 422 34" fill="none" stroke="#378ADD" stroke-width="1" opacity="0.3"/>
+              <circle cx="395" cy="55" r="2" fill="#378ADD" opacity="0.3"/>
+              <circle cx="410" cy="60" r="2" fill="#378ADD" opacity="0.35"/>
+              <circle cx="425" cy="53" r="2" fill="#378ADD" opacity="0.25"/>
+              <path d="M400 65 Q410 58 420 65" fill="none" stroke="#378ADD" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.4"/>
+              <text x="410" y="96" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0C447C">Embeddings</text>
+              <text x="410" y="110" text-anchor="middle" style="font-size:10px;fill:#4A45A2;opacity:0.8">deep understanding</text>
+              <path d="M396 82 L402 88 L424 68" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="250" y="160" text-anchor="middle" style="font-size:16px;font-weight:500;fill:var(--t1);animation:fadeIn 0.5s ease 1.2s both">Keep the brain. Ditch the mouth.</text>
+            <text x="250" y="182" text-anchor="middle" style="font-size:13px;fill:var(--t2);animation:fadeIn 0.5s ease 1.5s both">AI understands your docs — without generating or leaking anything.</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="slide" id="s4">
+        <div class="med">Introducing</div>
+        <div class="big" style="font-size:36px;margin-top:8px"><span class="accent">GapLens</span></div>
+        <div class="pres-sub" style="margin-top:4px">Lightweight. Safe. AI-powered.</div>
+        <div class="scene-art" style="margin-top:16px">
+          <svg width="520" height="140" viewBox="0 0 520 140">
+            <g style="animation:popIn 0.4s ease 0.2s both"><rect x="10" y="10" width="110" height="105" rx="14" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><rect x="35" y="28" width="60" height="40" rx="4" fill="#1D9E75" opacity="0.15" stroke="#1D9E75" stroke-width="0.5"/><rect x="40" y="33" width="50" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="40" y="41" width="35" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="40" y="49" width="42" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="40" y="57" width="28" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="50" y="68" width="30" height="4" rx="2" fill="#1D9E75" opacity="0.2"/><text x="65" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#085041">100% local</text><text x="65" y="106" text-anchor="middle" style="font-size:10px;fill:#0F6E56">Runs on your laptop</text></g>
+            <g style="animation:popIn 0.4s ease 0.35s both"><rect x="140" y="10" width="110" height="105" rx="14" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><circle cx="195" cy="42" r="18" fill="#1D9E75" opacity="0.12" stroke="#1D9E75" stroke-width="0.5"/><path d="M195 30 L195 42 L204 46" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/><path d="M183 54 Q195 60 207 54" fill="none" stroke="#1D9E75" stroke-width="1" opacity="0.4"/><text x="195" y="46" text-anchor="middle" style="font-size:10px;fill:#1D9E75;opacity:0.6">2s</text><text x="195" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#085041">2 seconds</text><text x="195" y="106" text-anchor="middle" style="font-size:10px;fill:#0F6E56">CPU only, no GPU</text></g>
+            <g style="animation:popIn 0.4s ease 0.5s both"><rect x="270" y="10" width="110" height="105" rx="14" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><path d="M325 28 L325 56 L308 62 L325 62 L325 62 L342 62 Z" fill="#1D9E75" opacity="0.12" stroke="#1D9E75" stroke-width="0.5"/><path d="M320 38 L325 44 L336 32" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/><text x="325" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#085041">No hallucinations</text><text x="325" y="106" text-anchor="middle" style="font-size:10px;fill:#0F6E56">Geometry, not generation</text></g>
+            <g style="animation:popIn 0.4s ease 0.65s both"><rect x="400" y="10" width="110" height="105" rx="14" fill="#EBF3FC" stroke="#378ADD" stroke-width="0.5"/><ellipse cx="455" cy="40" rx="20" ry="16" fill="#378ADD" opacity="0.1" stroke="#378ADD" stroke-width="0.5"/><path d="M443 36 Q448 30 455 36 Q462 30 467 36" fill="none" stroke="#378ADD" stroke-width="1.2" stroke-linecap="round"/><circle cx="448" cy="42" r="2" fill="#378ADD" opacity="0.5"/><circle cx="462" cy="42" r="2" fill="#378ADD" opacity="0.5"/><circle cx="455" cy="50" r="1.5" fill="#378ADD" opacity="0.4"/><path d="M445 48 Q455 55 465 48" fill="none" stroke="#378ADD" stroke-width="0.8" opacity="0.4"/><text x="455" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#0C447C">AI-enhanced</text><text x="455" y="106" text-anchor="middle" style="font-size:10px;fill:#4A45A2">LLM embeddings</text></g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="slide" id="s5">
+        <div class="big">How it works<br><span style="font-size:16px;color:var(--t2)">(the 30-second version)</span></div>
+        <div class="scene-art" style="margin-top:12px">
+          <svg width="500" height="180" viewBox="0 0 500 180">
+            <g style="animation:popIn 0.4s ease 0.2s both"><rect x="10" y="20" width="90" height="70" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="22" y="34" width="66" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="22" y="44" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="22" y="54" width="58" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="22" y="64" width="40" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><text x="55" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:var(--t2)">Your docs</text></g>
+            <line x1="105" y1="55" x2="135" y2="55" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 0.5s both"/>
+            <g style="animation:popIn 0.4s ease 0.6s both"><rect x="140" y="25" width="90" height="60" rx="10" fill="#EBF3FC" stroke="#378ADD" stroke-width="0.5"/><circle cx="165" cy="46" r="4" fill="#378ADD" opacity="0.4"/><circle cx="180" cy="52" r="4" fill="#378ADD" opacity="0.5"/><circle cx="195" cy="42" r="4" fill="#378ADD" opacity="0.4"/><circle cx="175" cy="60" r="3" fill="#378ADD" opacity="0.3"/><circle cx="200" cy="56" r="3" fill="#378ADD" opacity="0.3"/><text x="185" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0C447C">AI embeddings</text></g>
+            <line x1="235" y1="55" x2="265" y2="55" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 0.9s both"/>
+            <g style="animation:popIn 0.4s ease 1.0s both"><rect x="270" y="25" width="90" height="60" rx="10" fill="#FDF0EB" stroke="#D85A30" stroke-width="0.5"/><circle cx="295" cy="44" r="4" fill="#D85A30" opacity="0.4"/><circle cx="315" cy="50" r="4" fill="#D85A30" opacity="0.5"/><circle cx="330" cy="40" r="4" fill="#D85A30" opacity="0.4"/><circle cx="305" cy="58" r="12" fill="none" stroke="#E24B4A" stroke-width="1" stroke-dasharray="2 2"/><text x="315" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#993C1D">Geometry finds gaps</text></g>
+            <line x1="365" y1="55" x2="395" y2="55" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 1.3s both"/>
+            <g style="animation:popIn 0.4s ease 1.4s both"><rect x="400" y="20" width="90" height="70" rx="10" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><rect x="412" y="34" width="66" height="8" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="412" y="46" width="50" height="8" rx="3" fill="#EF9F27" opacity="0.3"/><rect x="412" y="58" width="58" height="8" rx="3" fill="#1D9E75" opacity="0.3"/><rect x="412" y="70" width="44" height="8" rx="3" fill="#1D9E75" opacity="0.3"/><text x="445" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#085041">Ranked report</text></g>
+            <text x="250" y="148" text-anchor="middle" style="font-size:13px;fill:var(--t3)">Your docs in. Ranked gap report out. That's it.</text>
+            <text x="250" y="170" text-anchor="middle" style="font-size:15px;font-weight:500;fill:#D85A30">Under 2 seconds. On your laptop.</text>
+            <defs><marker id="pa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="var(--b2)" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+          </svg>
+        </div>
+      </div>
+
+      <div class="slide" id="s6" style="position:relative;padding:0">
+        <canvas id="cv3d" class="cv3"></canvas>
+        <div class="s3ov"><h2>Seeing the gaps in 3D</h2><p>Each requirement becomes a point in space. Clusters form around topics. Red lines reveal where your project has blind spots.</p></div>
+        <div class="s3hint">Drag to orbit / scroll to zoom</div>
+        <div class="s3leg" id="leg3d"><span><i style="background:#5b8def"></i> Known topics</span><span><i class="dia" style="background:#ff2299"></i> Your project</span><span><i style="background:#e74c3c;border-radius:0;width:10px;height:2px"></i> Gap</span></div>
+        <div class="eqbar" id="eq3d"><span id="eqK3d"></span></div>
+      </div>
+
+      <div class="slide" id="s7" style="padding:0">
+        <div id="cDual"></div>
+      </div>
+
+      <div class="slide" id="s8">
+        <div class="big">Open the <span class="accent">black box</span></div>
+        <div class="pres-sub" style="margin-top:8px">Unlike LLM chat, every gap has a visual explanation you can inspect, verify, and trust.</div>
+        <div class="scene-art" style="margin-top:14px">
+          <svg width="440" height="160" viewBox="0 0 440 160">
+            <g style="animation:popIn 0.4s ease 0.3s both"><rect x="10" y="10" width="200" height="130" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="110" y="30" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t2)">Gap heatmap</text><rect x="30" y="42" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.25"/><rect x="75" y="42" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="120" y="42" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.3"/><rect x="165" y="42" width="30" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="30" y="65" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="75" y="65" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="120" y="65" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.35"/><rect x="165" y="65" width="30" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="30" y="88" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.35"/><rect x="75" y="88" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="120" y="88" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.15"/><rect x="165" y="88" width="30" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="30" y="111" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="75" y="111" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="120" y="111" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="165" y="111" width="30" height="18" rx="3" fill="#1D9E75" opacity="0.15"/></g>
+            <g style="animation:popIn 0.4s ease 0.6s both"><rect x="230" y="10" width="200" height="130" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="330" y="30" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t2)">Ranked findings</text><rect x="245" y="42" width="170" height="22" rx="4" fill="#E24B4A" opacity="0.15" stroke="#E24B4A" stroke-width="0.5" stroke-opacity="0.3"/><text x="255" y="57" style="font-size:11px;fill:#A32D2D">1. Missing: Security / Encryption</text><rect x="245" y="68" width="170" height="22" rx="4" fill="#E24B4A" opacity="0.1" stroke="#E24B4A" stroke-width="0.5" stroke-opacity="0.2"/><text x="255" y="83" style="font-size:11px;fill:#A32D2D">2. Missing: Portability / Backups</text><rect x="245" y="94" width="170" height="22" rx="4" fill="#EF9F27" opacity="0.1" stroke="#EF9F27" stroke-width="0.5" stroke-opacity="0.2"/><text x="255" y="109" style="font-size:11px;fill:#854F0B">3. Partial: Performance / Data</text><text x="330" y="132" text-anchor="middle" style="font-size:10px;fill:var(--t3)">+ example requirements from corpus</text></g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="slide" id="s9">
+        <div class="big">Your dataset.<br>Your rules.<br><span class="good">Your machine.</span></div>
+        <div class="scene-art" style="margin-top:16px">
+          <svg width="480" height="180" viewBox="0 0 480 180">
+            <g style="animation:popIn 0.4s ease 0.2s both">
+              <rect x="15" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+              <rect x="45" y="26" width="40" height="30" rx="4" fill="#E24B4A" opacity="0.12"/>
+              <path d="M65 30 L65 50" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+              <path d="M55 40 L75 40" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+              <text x="65" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Healthcare</text>
+              <text x="65" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">HIPAA safe</text>
+            </g>
+            <g style="animation:popIn 0.4s ease 0.35s both">
+              <rect x="130" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+              <rect x="158" y="24" width="44" height="34" rx="3" fill="#EF9F27" opacity="0.12" stroke="#EF9F27" stroke-width="0.5"/>
+              <rect x="163" y="30" width="34" height="4" rx="1" fill="#EF9F27" opacity="0.35"/>
+              <rect x="163" y="38" width="24" height="4" rx="1" fill="#EF9F27" opacity="0.25"/>
+              <rect x="163" y="46" width="30" height="4" rx="1" fill="#EF9F27" opacity="0.2"/>
+              <text x="180" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Finance</text>
+              <text x="180" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Audit ready</text>
+            </g>
+            <g style="animation:popIn 0.4s ease 0.5s both">
+              <rect x="245" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+              <path d="M280 28 L295 28 L310 45 L300 52 L280 52 L270 45 Z" fill="#378ADD" opacity="0.1" stroke="#378ADD" stroke-width="0.5"/>
+              <circle cx="290" cy="40" r="5" fill="#378ADD" opacity="0.2"/>
+              <path d="M285 40 L288 43 L296 36" fill="none" stroke="#378ADD" stroke-width="1.2" stroke-linecap="round"/>
+              <text x="295" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Defense</text>
+              <text x="295" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Air-gapped OK</text>
+            </g>
+            <g style="animation:popIn 0.4s ease 0.65s both">
+              <rect x="360" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+              <circle cx="410" cy="36" r="12" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="0.5"/>
+              <circle cx="410" cy="36" r="6" fill="#9b59b6" opacity="0.15"/>
+              <circle cx="410" cy="36" r="2" fill="#9b59b6" opacity="0.3"/>
+              <line x1="410" y1="48" x2="410" y2="56" stroke="#9b59b6" stroke-width="1" opacity="0.3"/>
+              <text x="410" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Automotive</text>
+              <text x="410" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">ISO 26262</text>
+            </g>
+            <text x="240" y="130" text-anchor="middle" style="font-size:14px;fill:var(--t2);animation:fadeIn 0.5s ease 1s both">Bring your own docs. The pipeline adapts.</text>
+            <g style="animation:fadeIn 0.5s ease 1.3s both">
+              <rect x="105" y="145" width="90" height="26" rx="13" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+              <text x="150" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Flexible</text>
+              <rect x="205" y="145" width="90" height="26" rx="13" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+              <text x="250" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Private</text>
+              <rect x="305" y="145" width="90" height="26" rx="13" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+              <text x="350" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Transparent</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="slide" id="s10">
+        <div class="big" style="font-size:28px">Stop guessing.<br>Start <span class="good">measuring</span>.</div>
+        <div class="scene-art" style="margin-top:20px">
+          <svg width="360" height="90" viewBox="0 0 360 90"><g style="animation:pulseBtn 2s ease-in-out infinite"><rect x="80" y="15" width="200" height="55" rx="27" fill="#E8F5EE" stroke="#1D9E75" stroke-width="1"/><text x="180" y="48" text-anchor="middle" style="font-size:18px;font-weight:500;fill:#0F6E56">Try GapLens today</text></g></svg>
+        </div>
+        <div class="pres-sub" style="margin-top:6px">Lightweight. Private. Explainable. AI-powered.<br>Requirement gap detection that actually works.</div>
+        <div style="margin-top:18px;text-align:center">
+          <span class="pill pill-g">No cloud</span>
+          <span class="pill pill-g">No GPU</span>
+          <span class="pill pill-g">No hallucinations</span>
+          <span class="pill pill-b">LLM embeddings</span>
+          <span class="pill pill-b">2 seconds</span>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button id="pb" onclick="go(-1)">&larr; Back</button>
+        <div><div class="dots" id="dts"></div><div class="sn" id="sl"></div></div>
+        <button id="nb" onclick="go(1)">Next &rarr;</button>
       </div>
     </div>
+
   </div>
 </section>
 
+<!-- ─── CTA ─── -->
 <section class="cta">
   <h2 data-anim>Stop guessing. Start measuring.</h2>
   <p data-anim>Requirement gap detection that actually works.</p>
-  <button class="cta-btn" data-anim>Try GapLens</button>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative" data-anim>
+    <a href="#" class="cta-btn" onclick="event.preventDefault();alert('Source code coming soon!')" style="background:var(--p2);color:var(--w)">Source Code <span style="font-size:11px;opacity:0.7;margin-left:4px">— coming soon</span></a>
+    <a href="#" class="cta-btn" onclick="event.preventDefault();alert('Report coming soon!')" style="background:var(--w);color:var(--p2);border:2px solid var(--p2)">Full Report <span style="font-size:11px;opacity:0.7;margin-left:4px">— coming soon</span></a>
+  </div>
 </section>
 
+<!-- ─── FOOTER ─── -->
 <footer class="footer">
   <a href="#">DiveAI</a> &middot; GapLens &middot; COMP.CS.530-2025-2026-2
 </footer>
 
+<!-- ─── SCRIPTS ─── -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// Topbar scroll effect
+var topbar=document.getElementById('topbar');
+window.addEventListener('scroll',function(){topbar.classList.toggle('scrolled',window.scrollY>20)});
+
+// Scroll animation observer
 var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:0.15});
 document.querySelectorAll('[data-anim]').forEach(function(el,i){el.style.transitionDelay=(i%4)*0.1+'s';obs.observe(el)});
+
+// === PRESENTATION ENGINE (from gaplens_combined) ===
+var BG3=0xf5f5f0;
+var YC=0xff2299,YH='#ff2299';
+var N=11,cur=0,autoOn=false,autoT=null;
+var titles=['The problem','The old way','AI problems','The smart way','GapLens','How it works','Gap detection','Smart filtering','Explainable','Your data','CTA'];
+
+// === 3D ENGINE (main scene) ===
+var mainR,mainS,mainCam,mainClock,mainGroups={},mainTweens=[];
+var isDrag=false,prevM={x:0,y:0},sph={theta:0,phi:Math.PI/2.4},camD=14;
+var init3d=false;
+function boot3d(){
+  if(init3d)return;init3d=true;
+  var cv=document.getElementById('cv3d');
+  var W=cv.clientWidth,H=cv.clientHeight;
+  mainR=new THREE.WebGLRenderer({canvas:cv,antialias:true});
+  mainR.setPixelRatio(Math.min(devicePixelRatio,2));mainR.setSize(W,H);mainR.setClearColor(BG3);
+  mainS=new THREE.Scene();mainCam=new THREE.PerspectiveCamera(50,W/H,0.1,200);
+  mainCam.position.set(0,2,14);mainCam.lookAt(0,0,0);
+  mainS.add(new THREE.AmbientLight(0xaaaaaa));
+  var dl=new THREE.DirectionalLight(0xffffff,0.5);dl.position.set(5,8,5);mainS.add(dl);
+  mainClock=new THREE.Clock();
+  cv.addEventListener('pointerdown',function(e){isDrag=true;prevM={x:e.clientX,y:e.clientY}});
+  window.addEventListener('pointerup',function(){isDrag=false});
+  window.addEventListener('pointermove',function(e){if(!isDrag)return;sph.theta-=(e.clientX-prevM.x)*0.005;sph.phi=Math.max(0.3,Math.min(2.8,sph.phi-(e.clientY-prevM.y)*0.005));prevM={x:e.clientX,y:e.clientY};uMC()});
+  cv.addEventListener('wheel',function(e){e.preventDefault();camD=Math.max(5,Math.min(25,camD+e.deltaY*0.01));uMC()},{passive:false});
+  raf3d();
+}
+function uMC(){mainCam.position.set(camD*Math.sin(sph.phi)*Math.sin(sph.theta),camD*Math.cos(sph.phi),camD*Math.sin(sph.phi)*Math.cos(sph.theta));mainCam.lookAt(0,0,0)}
+function raf3d(){requestAnimationFrame(raf3d);var dt=mainClock.getDelta();mainTweens.forEach(function(t){t.update(dt)});mainTweens=mainTweens.filter(function(t){return!t.done});if(mainGroups.root)mainGroups.root.rotation.y+=0.0007;mainR.render(mainS,mainCam)}
+function clr3d(){Object.keys(mainGroups).forEach(function(k){if(mainGroups[k]){mainS.remove(mainGroups[k]);mainGroups[k]=null}});mainGroups={};mainTweens=[]}
+
+function tw(o,p,a,b,dl,dr){var el=0,d=dl||0,du=dr||0.5;o[p]=a;return{done:false,update:function(dt){if(this.done)return;el+=dt;if(el<d)return;var t=Math.min(1,(el-d)/du);var e=1-Math.pow(1-t,3);o[p]=a+(b-a)*e;if(t>=1)this.done=true}}}
+function twC(fn,dl,dr){var el=0,d=dl||0,du=dr||1;return{done:false,update:function(dt){if(this.done)return;el+=dt;if(el<d)return;var t=Math.min(1,(el-d)/du);fn(t);if(t>=1)this.done=true}}}
+function lbl(par,txt,x,y,z,col,dl,sz,twa){
+  var c=document.createElement('canvas');c.width=512;c.height=64;
+  var cx=c.getContext('2d');cx.font='500 '+(sz||24)+'px sans-serif';cx.fillStyle=col||'#fff';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(txt,256,32);
+  var tex=new THREE.CanvasTexture(c);var mat=new THREE.SpriteMaterial({map:tex,transparent:true,opacity:0,depthTest:false});
+  var sp=new THREE.Sprite(mat);sp.position.set(x,y,z);sp.scale.set(3,0.375,1);par.add(sp);
+  (twa||mainTweens).push(tw(mat,'opacity',0,1,dl||0));
+}
+function clusterCentroid(pts){var sx=0,sy=0,sz=0;for(var i=0;i<pts.length;i++){sx+=pts[i].x;sy+=pts[i].y;sz+=pts[i].z}return{x:sx/pts.length,y:sy/pts.length,z:sz/pts.length}}
+
+// Cluster definitions
+var CD=[{cx:2.5,cy:1.5,cz:1,n:12,label:'Security',col:0x5b8def},{cx:-2,cy:2,cz:-1.5,n:10,label:'Performance',col:0xf0a030},{cx:-1,cy:-2.5,cz:2,n:10,label:'Usability',col:0x44bb77},{cx:2,cy:-1.5,cz:-2.5,n:8,label:'Legal',col:0x9b59b6},{cx:-2.5,cy:0,cz:-2,n:7,label:'Portability',col:0xcc5555}];
+var cPts=null,yPts=null;
+function getRef(){if(cPts)return cPts;cPts=CD.map(function(c){var pts=[];for(var i=0;i<c.n;i++){var x=c.cx+(Math.random()-0.5)*1.2,y=c.cy+(Math.random()-0.5)*1.2,z=c.cz+(Math.random()-0.5)*1.2;var l=Math.sqrt(x*x+y*y+z*z);x=x/l*4;y=y/l*4;z=z/l*4;x+=(Math.random()-0.5)*0.35;y+=(Math.random()-0.5)*0.35;z+=(Math.random()-0.5)*0.35;pts.push({x:x,y:y,z:z})}return{def:c,pts:pts}});return cPts}
+function getYour(){if(yPts)return yPts;yPts=[];var cls=getRef();var covC=cls[2];for(var i=0;i<5;i++){var b=covC.pts[i%covC.pts.length];yPts.push({x:b.x+(Math.random()-0.5)*0.4,y:b.y+(Math.random()-0.5)*0.4,z:b.z+(Math.random()-0.5)*0.4,group:'covered'})}var bX=0,bY=3.5,bZ=2;var l=Math.sqrt(bX*bX+bY*bY+bZ*bZ);bX=bX/l*4;bY=bY/l*4;bZ=bZ/l*4;for(var i=0;i<6;i++){var px=bX+(Math.random()-0.5)*0.7,py=bY+(Math.random()-0.5)*0.7,pz=bZ+(Math.random()-0.5)*0.7;var pl=Math.sqrt(px*px+py*py+pz*pz);px=px/pl*4;py=py/pl*4;pz=pz/pl*4;yPts.push({x:px+(Math.random()-0.5)*0.15,y:py+(Math.random()-0.5)*0.15,z:pz+(Math.random()-0.5)*0.15,group:'isolated'})}return yPts}
+
+function buildGapScene(){
+  clr3d();boot3d();camD=14;sph.theta=0.3;sph.phi=Math.PI/2.8;uMC();
+  var root=new THREE.Group();mainGroups.root=root;mainS.add(root);
+  root.add(new THREE.Mesh(new THREE.SphereGeometry(4,48,48),new THREE.MeshBasicMaterial({color:0xddddd5,wireframe:true,transparent:true,opacity:0.09})));
+  var cls=getRef();var centroids=cls.map(function(c){return clusterCentroid(c.pts)});
+  cls.forEach(function(c,ci){var cen=centroids[ci];c.pts.forEach(function(p,pi){var mat=new THREE.MeshPhongMaterial({color:c.def.col,transparent:true,opacity:0});var m=new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),mat);m.position.set(p.x,p.y,p.z);root.add(m);mainTweens.push(tw(mat,'opacity',0,0.65,0.1+ci*0.08+pi*0.015))});lbl(root,c.def.label,cen.x,cen.y+1.5,cen.z,'#'+c.def.col.toString(16).padStart(6,'0'),0.2+ci*0.08)});
+  var yp=getYour();var covPts=yp.filter(function(p){return p.group==='covered'});var isoPts=yp.filter(function(p){return p.group==='isolated'});var isoCen=clusterCentroid(isoPts);
+  lbl(root,'Your requirements entering...',0,7,0,YH,1.2,22);
+  yp.forEach(function(p,i){var mat=new THREE.MeshPhongMaterial({color:YC,transparent:true,opacity:0,emissive:YC,emissiveIntensity:0.5});var m=new THREE.Mesh(new THREE.OctahedronGeometry(0.22,0),mat);m.position.set(p.x,9,p.z);m.scale.set(0.2,0.2,0.2);root.add(m);mainTweens.push(tw(mat,'opacity',0,0.95,1.8+i*0.18,0.4));mainTweens.push(twC(function(t){var e=1-Math.pow(1-t,2.5);m.position.y=9+(p.y-9)*e;m.rotation.y=t*Math.PI*3;var s=0.2+e*0.8;m.scale.set(s,s,s)},1.8+i*0.18,0.8))});
+  lbl(root,'Your project',isoCen.x,isoCen.y-1.5,isoCen.z,YH,4.2,18);
+  var covCen=centroids[2];var gRing=new THREE.Mesh(new THREE.RingGeometry(1.0,1.15,32),new THREE.MeshBasicMaterial({color:0x44bb77,transparent:true,opacity:0,side:2}));gRing.position.set(covCen.x,covCen.y,covCen.z);gRing.lookAt(0,0,0);root.add(gRing);mainTweens.push(tw(gRing.material,'opacity',0,0.35,4.5));
+  var covRefPt=cls[2].pts[0];var minCovD=Infinity,nearCov=covPts[0];covPts.forEach(function(y){var d=Math.sqrt((y.x-covRefPt.x)**2+(y.y-covRefPt.y)**2+(y.z-covRefPt.z)**2);if(d<minCovD){minCovD=d;nearCov=y}});
+  var xCovMat=new THREE.MeshPhongMaterial({color:0xffffff,transparent:true,opacity:0,emissive:0xffffff,emissiveIntensity:0.8});var xCov=new THREE.Mesh(new THREE.SphereGeometry(0.15,12,12),xCovMat);xCov.position.set(covRefPt.x,covRefPt.y,covRefPt.z);root.add(xCov);mainTweens.push(tw(xCovMat,'opacity',0,0.9,4.6));
+  var gLM=new THREE.LineBasicMaterial({color:0x44bb77,transparent:true,opacity:0});root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(covRefPt.x,covRefPt.y,covRefPt.z),new THREE.Vector3(nearCov.x,nearCov.y,nearCov.z)]),gLM));mainTweens.push(tw(gLM,'opacity',0,0.5,4.8));
+  lbl(root,'Covered \u2714',covCen.x,covCen.y-1.8,covCen.z,'#44bb77',5.0,20);
+  [0,1,3,4].forEach(function(ci,idx){var cen=centroids[ci];var minD=Infinity,nearest=isoPts[0];isoPts.forEach(function(y){var d=Math.sqrt((y.x-cen.x)**2+(y.y-cen.y)**2+(y.z-cen.z)**2);if(d<minD){minD=d;nearest=y}});var cenLen=Math.sqrt(cen.x*cen.x+cen.y*cen.y+cen.z*cen.z);var xS={x:cen.x/cenLen*4,y:cen.y/cenLen*4,z:cen.z/cenLen*4};var xM=new THREE.MeshPhongMaterial({color:0xffffff,transparent:true,opacity:0,emissive:0xffffff,emissiveIntensity:0.8});var xMe=new THREE.Mesh(new THREE.SphereGeometry(0.15,12,12),xM);xMe.position.set(xS.x,xS.y,xS.z);root.add(xMe);mainTweens.push(tw(xM,'opacity',0,0.9,5.2+idx*0.25));var lm=new THREE.LineBasicMaterial({color:0xe74c3c,transparent:true,opacity:0});root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(xS.x,xS.y,xS.z),new THREE.Vector3(nearest.x,nearest.y,nearest.z)]),lm));mainTweens.push(tw(lm,'opacity',0,0.6,5.4+idx*0.25));var rR=new THREE.Mesh(new THREE.RingGeometry(0.8,0.95,32),new THREE.MeshBasicMaterial({color:0xe74c3c,transparent:true,opacity:0,side:2}));rR.position.set(cen.x,cen.y,cen.z);rR.lookAt(0,0,0);root.add(rR);mainTweens.push(tw(rR.material,'opacity',0,0.3,5.2+idx*0.25));lbl(root,'Gap!',cen.x,cen.y-1.6,cen.z,'#e74c3c',5.8+idx*0.25,18)});
+  katex.render('\\varphi(x;\\,\\mathbf{Y}) = d_{\\cos}\\!\\bigl(x,\\;\\mathrm{NN}_{\\mathbf{Y}}(x)\\bigr)',document.getElementById('eqK3d'),{throwOnError:false,displayMode:true});
+}
+
+// === DUAL 3D SCENE ===
+var dualR=[],dualS=[],dualC=[],dualCk=[],dualTw=[[],[]],dualDr=[{active:false,prev:{x:0,y:0},sph:{theta:0,phi:Math.PI/2.8},dist:7},{active:false,prev:{x:0,y:0},sph:{theta:0,phi:Math.PI/2.8},dist:7}];
+var dualInit=false;
+function bootDual(){
+  if(dualInit)return;dualInit=true;
+  for(var i=0;i<2;i++){var cv=document.getElementById('dcv'+i);var W=cv.clientWidth||300,H=cv.clientHeight||250;var r=new THREE.WebGLRenderer({canvas:cv,antialias:true});r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(W,H);r.setClearColor(BG3);var s=new THREE.Scene();var cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);cam.position.set(0,1.5,7);cam.lookAt(0,0,0);s.add(new THREE.AmbientLight(0xaaaaaa));var dl=new THREE.DirectionalLight(0xffffff,0.5);dl.position.set(3,5,3);s.add(dl);dualR.push(r);dualS.push(s);dualC.push(cam);dualCk.push(new THREE.Clock());
+  (function(idx,cvE){cvE.addEventListener('pointerdown',function(e){dualDr[idx].active=true;dualDr[idx].prev={x:e.clientX,y:e.clientY}});window.addEventListener('pointerup',function(){dualDr[0].active=false;dualDr[1].active=false});window.addEventListener('pointermove',function(e){for(var j=0;j<2;j++){if(!dualDr[j].active)continue;var dd=dualDr[j];dd.sph.theta-=(e.clientX-dd.prev.x)*0.007;dd.sph.phi=Math.max(0.4,Math.min(2.7,dd.sph.phi-(e.clientY-dd.prev.y)*0.007));dd.prev={x:e.clientX,y:e.clientY};udC(j)}});cvE.addEventListener('wheel',function(e){e.preventDefault();dualDr[idx].dist=Math.max(3,Math.min(15,dualDr[idx].dist+e.deltaY*0.01));udC(idx)},{passive:false})})(i,cv)}
+  requestAnimationFrame(rafDual);
+}
+function udC(i){var d=dualDr[i];dualC[i].position.set(d.dist*Math.sin(d.sph.phi)*Math.sin(d.sph.theta),d.dist*Math.cos(d.sph.phi),d.dist*Math.sin(d.sph.phi)*Math.cos(d.sph.theta));dualC[i].lookAt(0,0,0)}
+function rafDual(){requestAnimationFrame(rafDual);for(var i=0;i<2;i++){if(!dualR[i])continue;var dt=dualCk[i].getDelta();dualTw[i].forEach(function(t){t.update(dt)});dualTw[i]=dualTw[i].filter(function(t){return!t.done});dualS[i].children.forEach(function(c){if(c.userData&&c.userData.spin)c.rotation.y+=0.003});dualR[i].render(dualS[i],dualC[i])}}
+
+function buildDualScene(){
+  var wrap=document.getElementById('cDual');
+  wrap.innerHTML='<div style="padding:16px 20px 8px"><h2 style="font-size:18px;font-weight:500;margin:0 0 4px">Smart filtering: avoiding false alarms</h2><p style="font-size:13px;color:var(--t2);margin:0;line-height:1.5">Not every distance means a gap. We compare you against the average \u2014 only real blind spots get flagged.</p></div>'+
+  '<div class="dual-wrap"><div class="dual-panel"><div class="dual-label"><h3>Niche topic</h3><p>Everyone is far \u2014 no alarm</p></div><canvas id="dcv0"></canvas><div class="dual-verdict" style="background:#1D9E7515;color:#0F6E56">Normal \u2014 not a gap</div></div>'+
+  '<div class="dual-panel"><div class="dual-label"><h3>Common topic</h3><p>Others are close, you\'re far</p></div><canvas id="dcv1"></canvas><div class="dual-verdict" style="background:#E24B4A15;color:#A32D2D">Real gap \u2014 needs attention!</div></div></div>'+
+  '<div class="dual-legend"><span><i style="background:#5b8def"></i> Other projects</span><span><i class="dia" style="background:'+YH+'"></i> Your project</span><span><i style="background:#EF9F27"></i> Reference topic</span></div>'+
+  '<div class="eqbar" id="eqDual"></div>';
+  dualInit=false;dualR=[];dualS=[];dualC=[];dualCk=[];dualTw=[[],[]];dualDr=[{active:false,prev:{x:0,y:0},sph:{theta:0,phi:Math.PI/2.8},dist:7},{active:false,prev:{x:0,y:0},sph:{theta:0,phi:Math.PI/2.8},dist:7}];
+  setTimeout(function(){
+    bootDual();
+    var gA=new THREE.Group();gA.userData.spin=true;dualS[0].add(gA);
+    var gB=new THREE.Group();gB.userData.spin=true;dualS[1].add(gB);
+    gA.add(new THREE.Mesh(new THREE.SphereGeometry(0.2,12,12),new THREE.MeshPhongMaterial({color:0xEF9F27,emissive:0xEF9F27,emissiveIntensity:0.4})));
+    lbl(gA,'topic',0.5,0.3,0,'#EF9F27',0.2,20,dualTw[0]);
+    for(var i=0;i<6;i++){var a=Math.random()*Math.PI*2,ph=Math.random()*Math.PI,r=2+Math.random()*1.5;var mat=new THREE.MeshPhongMaterial({color:0x5b8def,transparent:true,opacity:0});var m=new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),mat);m.position.set(r*Math.sin(ph)*Math.cos(a),r*Math.sin(ph)*Math.sin(a),r*Math.cos(ph));gA.add(m);dualTw[0].push(tw(mat,'opacity',0,0.55,0.3+i*0.06))}
+    var yA=new THREE.Mesh(new THREE.OctahedronGeometry(0.18,0),new THREE.MeshPhongMaterial({color:YC,transparent:true,opacity:0,emissive:YC,emissiveIntensity:0.5}));yA.position.set(2.2,1.5,0.8);gA.add(yA);dualTw[0].push(tw(yA.material,'opacity',0,0.95,0.6));
+    var lA=new THREE.LineBasicMaterial({color:0xEF9F27,transparent:true,opacity:0});gA.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(2.2,1.5,0.8)]),lA));dualTw[0].push(tw(lA,'opacity',0,0.4,0.9));
+    lbl(gA,'Similar distance',0,-2.8,0,'#44bb77',1.4,20,dualTw[0]);
+
+    gB.add(new THREE.Mesh(new THREE.SphereGeometry(0.2,12,12),new THREE.MeshPhongMaterial({color:0xEF9F27,emissive:0xEF9F27,emissiveIntensity:0.4})));
+    lbl(gB,'topic',0.5,0.3,0,'#EF9F27',0.2,20,dualTw[1]);
+    for(var i=0;i<8;i++){var a=Math.random()*Math.PI*2,ph=Math.random()*Math.PI,r=0.4+Math.random()*0.5;var mat=new THREE.MeshPhongMaterial({color:0x5b8def,transparent:true,opacity:0});var m=new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),mat);m.position.set(r*Math.sin(ph)*Math.cos(a),r*Math.sin(ph)*Math.sin(a),r*Math.cos(ph));gB.add(m);dualTw[1].push(tw(mat,'opacity',0,0.6,0.3+i*0.04))}
+    var yB=new THREE.Mesh(new THREE.OctahedronGeometry(0.18,0),new THREE.MeshPhongMaterial({color:YC,transparent:true,opacity:0,emissive:YC,emissiveIntensity:0.5}));yB.position.set(3.2,2.2,1);gB.add(yB);dualTw[1].push(tw(yB.material,'opacity',0,0.95,0.6));
+    var lB=new THREE.LineBasicMaterial({color:0xe74c3c,transparent:true,opacity:0});gB.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(3.2,2.2,1)]),lB));dualTw[1].push(tw(lB,'opacity',0,0.6,0.9));
+    lbl(gB,'You\'re way behind!',0,-2.8,0,'#e74c3c',1.4,20,dualTw[1]);
+    var bub=new THREE.Mesh(new THREE.SphereGeometry(1,20,20),new THREE.MeshPhongMaterial({color:0xe74c3c,transparent:true,opacity:0,side:2}));gB.add(bub);dualTw[1].push(tw(bub.material,'opacity',0,0.08,1.2));
+    katex.render('\\psi(x) = \\mathrm{clip}\\!\\left(\\frac{\\varphi(x;\\,\\mathbf{Y}_*) - \\varphi_0(x)}{\\hat{\\sigma}(x) + \\varepsilon},\\;-5,\\;5\\right)',document.getElementById('eqDual'),{throwOnError:false,displayMode:true});
+  },50);
+}
+
+// === SLIDE NAVIGATION ===
+function updUI(){
+  for(var i=0;i<N;i++){var el=document.getElementById('s'+i);if(el)el.className='slide'+(i===cur?' on':'')}
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===N-1;
+  var d=document.getElementById('dts');d.innerHTML='';
+  for(var i=0;i<N;i++){var dd=document.createElement('div');dd.className='dd'+(i===cur?' on':'');dd.onclick=(function(j){return function(){cur=j;updUI();runScene()}})(i);d.appendChild(dd)}
+  document.getElementById('sl').textContent=(cur+1)+'/'+N+': '+titles[cur];
+}
+function runScene(){if(cur===6)buildGapScene();if(cur===7)buildDualScene()}
+function go(d){cur=Math.max(0,Math.min(N-1,cur+d));updUI();runScene()}
+function togA(){autoOn=!autoOn;document.getElementById('ab').textContent=autoOn?'\u23F8 Pause':'\u25B6 Play';if(autoOn)rA();else clearTimeout(autoT)}
+function rA(){if(!autoOn)return;if(cur<N-1){autoT=setTimeout(function(){go(1);rA()},cur===6?7000:4000)}else{autoOn=false;document.getElementById('ab').textContent='\u25B6 Play'}}
+updUI();
 </script>
 </body>
 </html>
