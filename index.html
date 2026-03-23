@@ -111,7 +111,7 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden}
 .features h2{font-size:32px;font-weight:500;color:var(--t1);text-align:center;margin-bottom:12px}
 .features .sub{font-size:15px;color:var(--t2);text-align:center;margin-bottom:48px}
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-.card{background:var(--w);border-radius:16px;padding:24px 20px;border:1px solid var(--p6);transition:transform 0.3s ease,box-shadow 0.3s ease}
+.card{background:var(--p7);border-radius:16px;padding:24px 20px;border:1px solid var(--p6);transition:transform 0.3s ease,box-shadow 0.3s ease}
 .card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(75,69,162,0.08)}
 .card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
 .card-icon.ic-g{background:#E8F5EE}
@@ -542,8 +542,43 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden}
   </div>
 </section>
 
+<!-- ─── FEATURES ─── -->
+<section class="features" style="background:var(--w)">
+  <div class="features-inner">
+    <h2 data-anim>Why GapLens?</h2>
+    <p class="sub" data-anim>We keep AI's brain but ditch its mouth. No generation. No cloud. No hallucinations.</p>
+    <div class="cards">
+      <div class="card" data-anim>
+        <div class="card-icon ic-g"><svg viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>100% local</h3>
+        <p>Your data never leaves your machine. Zero telemetry. No cloud APIs. Deploy in air-gapped environments.</p>
+      </div>
+      <div class="card" data-anim>
+        <div class="card-icon ic-c"><svg viewBox="0 0 24 24" fill="none" stroke="#993C1D" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h3>Transparent</h3>
+        <p>Every gap score is auditable. Visual heatmaps and ranked findings explain exactly why each gap was flagged.</p>
+      </div>
+      <div class="card" data-anim>
+        <div class="card-icon ic-b"><svg viewBox="0 0 24 24" fill="none" stroke="#0C447C" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+        <h3>AI-enhanced</h3>
+        <p>LLM embeddings provide deep semantic understanding. Geometric analysis on the full 1024-dimension space.</p>
+      </div>
+      <div class="card" data-anim>
+        <div class="card-icon ic-p"><svg viewBox="0 0 24 24" fill="none" stroke="#4A45A2" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h2M7 11h4"/></svg></div>
+        <h3>2-second analysis</h3>
+        <p>CPU-only inference. No GPU required. Analyse your entire requirements spec in under two seconds.</p>
+      </div>
+      <div class="card" data-anim>
+        <div class="card-icon" style="background:#FCEBEB"><svg viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <h3>No hallucinations</h3>
+        <p>Pure geometry, not generation. Every finding is grounded in real data — no made-up requirements.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ─── CTA ─── -->
-<section class="cta">
+<section class="cta" style="background:var(--p7)">
   <h2 data-anim>Stop guessing. Start measuring.</h2>
   <p data-anim>Requirement gap detection that actually works.</p>
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative" data-anim>
