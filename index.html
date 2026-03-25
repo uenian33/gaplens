@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GapLens — DiveAI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <style>
 :root{
@@ -140,7 +140,7 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
 .slide.on{display:flex;flex-direction:column;align-items:center;justify-content:center;animation:sIn 0.5s ease both}
 .big{font-size:28px;font-weight:500;text-align:center;line-height:1.35;color:var(--t1);max-width:580px}
 .med{font-size:20px;font-weight:500;text-align:center;color:var(--t1);max-width:520px;line-height:1.5}
-.pres-sub{font-size:14px;color:var(--t2);text-align:center;max-width:500px;line-height:1.6;margin-top:10px}
+.pres-sub,.sub{font-size:14px;color:var(--t2);text-align:center;max-width:500px;line-height:1.6;margin-top:10px}
 .accent{color:var(--coral)}.good{color:var(--green)}.bad{color:var(--red)}.blu{color:var(--p3)}
 .card-row{display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;justify-content:center}
 .fcard{background:var(--surface);border-radius:12px;padding:20px;width:175px;text-align:center;border:1px solid rgba(15,23,42,0.06)}
@@ -188,6 +188,14 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
 .cta-btn{display:inline-block;padding:13px 32px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;position:relative;font-family:var(--f)}
 .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
 
+/* ─── CITATION ─── */
+.cite-section{padding:56px 24px;background:var(--w);border-top:1px solid rgba(15,23,42,0.06)}
+.cite-inner{max-width:680px;margin:0 auto;text-align:center}
+.cite-block{position:relative;margin-top:20px;background:var(--p7);border:1px solid rgba(15,23,42,0.06);border-radius:12px;padding:20px 24px;text-align:left;font-family:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.7;color:var(--t2);white-space:pre-wrap;word-break:break-all;overflow-x:auto}
+.cite-copy{position:absolute;top:10px;right:10px;background:var(--w);border:1px solid rgba(15,23,42,0.1);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:500;color:var(--t2);cursor:pointer;font-family:var(--f);transition:all 0.2s}
+.cite-copy:hover{background:var(--p6);color:var(--p2);border-color:var(--p4)}
+.cite-copy.copied{background:rgba(5,150,105,0.08);color:#059669;border-color:rgba(5,150,105,0.2)}
+
 /* ─── FOOTER ─── */
 .footer{padding:36px 24px;text-align:center;font-size:11px;color:var(--t3);border-top:1px solid rgba(15,23,42,0.06);letter-spacing:0.3px}
 .footer a{color:var(--p3);text-decoration:none;font-weight:500}
@@ -223,6 +231,7 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
   <div class="topbar-nav">
     <a href="#overview" class="nav-link">Overview</a>
     <a href="#demo" class="nav-link">How it works</a>
+    <a href="#cite" class="nav-link">Cite</a>
     <a href="https://github.com/uenian33/gaplens/blob/main/LLM2026_embedding_analysis.pdf" target="_blank" class="nav-link">Report</a>
     <a href="https://github.com/GPT-Laboratory/DiveAI_Case-16-Visualizing-the-Requirements-Space/tree/data_analysis_research_questions" target="_blank" class="nav-primary">Code</a>
   </div>
@@ -259,270 +268,476 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
     <p class="sec-sub" data-anim>Walk through the full story in our interactive slide deck.</p>
 
     <div class="P" data-anim>
-      <button class="abtn" id="ab" onclick="togA()">&#9654; Play</button>
+<button class="abtn" id="ab" onclick="togA()">&#9654; Play</button>
 
-      <div class="slide on" id="s0">
-        <div class="big">"Did we cover<br><span class="accent">all</span> the requirements?"</div>
-        <div class="pres-sub" style="margin-top:12px">The question that keeps every PM, BA, and engineering lead up at night.</div>
-        <div class="scene-art">
-          <svg width="420" height="170" viewBox="0 0 420 170">
-            <g style="animation:float 3s ease-in-out infinite">
-              <circle cx="100" cy="75" r="36" fill="#FFD93D" stroke="#E8B730" stroke-width="1.5"/>
-              <circle cx="100" cy="75" r="34" fill="#FFD93D"/>
-              <ellipse cx="87" cy="68" rx="5" ry="6" fill="#664400"/>
-              <ellipse cx="113" cy="68" rx="5" ry="6" fill="#664400"/>
-              <ellipse cx="87" cy="67" rx="5" ry="3.5" fill="#fff" opacity="0.3"/>
-              <ellipse cx="113" cy="67" rx="5" ry="3.5" fill="#fff" opacity="0.3"/>
-              <path d="M78 58 Q83 53 90 56" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
-              <path d="M110 56 Q117 53 122 58" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
-              <path d="M88 88 Q94 83 100 86 Q106 83 112 88" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="76" cy="82" r="5" fill="#FF9F43" opacity="0.3"/>
-              <circle cx="124" cy="82" r="5" fill="#FF9F43" opacity="0.3"/>
-              <path d="M90 46 L94 42 L98 46" fill="none" stroke="#E8B730" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-              <path d="M102 44 L106 40 L110 44" fill="none" stroke="#E8B730" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-              <text x="100" y="132" text-anchor="middle" style="font-size:12px;fill:var(--t3)">PM at 3am</text>
-            </g>
-            <g style="animation:float 2.5s ease-in-out infinite 0.3s">
-              <path d="M150 20 Q150 5 170 5 L280 5 Q300 5 300 20 L300 95 Q300 110 280 110 L180 110 L160 125 L165 110 L170 110 Q150 110 150 95 Z" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
-              <line x1="170" y1="25" x2="205" y2="25" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
-              <rect x="165" y="22" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
-              <path d="M167 26 L169 28 L172 24" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="170" y1="40" x2="220" y2="40" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
-              <rect x="165" y="37" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
-              <path d="M167 41 L169 43 L172 39" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="170" y1="55" x2="195" y2="55" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
-              <rect x="165" y="52" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
-              <path d="M167 56 L169 58 L172 54" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="170" y1="72" x2="210" y2="72" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 3"/>
-              <rect x="165" y="69" width="8" height="8" rx="2" fill="none" stroke="#E24B4A" stroke-width="1.2"/>
-              <line x1="170" y1="88" x2="200" y2="88" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 3"/>
-              <rect x="165" y="85" width="8" height="8" rx="2" fill="none" stroke="#E24B4A" stroke-width="1.2"/>
-              <text x="240" y="76" style="font-size:20px;fill:#E24B4A;opacity:0.7">?</text>
-              <text x="260" y="60" style="font-size:14px;fill:#E24B4A;opacity:0.4">?</text>
-              <text x="275" y="90" style="font-size:18px;fill:#E24B4A;opacity:0.5">?</text>
-            </g>
-            <g style="animation:shake 2.5s ease-in-out infinite 0.8s">
-              <text x="350" y="50" text-anchor="middle" style="font-size:52px;fill:#E24B4A;opacity:0.8">?</text>
-              <text x="380" y="80" text-anchor="middle" style="font-size:32px;fill:#E24B4A;opacity:0.4">?</text>
-              <text x="340" y="100" text-anchor="middle" style="font-size:24px;fill:#E24B4A;opacity:0.25">?</text>
-            </g>
-          </svg>
-        </div>
-      </div>
+<div class="slide on" id="s0">
+  <div class="big">"Did we cover<br><span class="accent">all</span> the requirements?"</div>
+  <div class="sub" style="margin-top:12px">The question that keeps every PM, BA, and engineering lead up at night.</div>
+  <div class="scene-art">
+    <svg width="420" height="170" viewBox="0 0 420 170">
+      <g style="animation:float 3s ease-in-out infinite">
+        <circle cx="100" cy="75" r="36" fill="#FFD93D" stroke="#E8B730" stroke-width="1.5"/>
+        <circle cx="100" cy="75" r="34" fill="#FFD93D"/>
+        <ellipse cx="87" cy="68" rx="5" ry="6" fill="#664400"/>
+        <ellipse cx="113" cy="68" rx="5" ry="6" fill="#664400"/>
+        <ellipse cx="87" cy="67" rx="5" ry="3.5" fill="#fff" opacity="0.3"/>
+        <ellipse cx="113" cy="67" rx="5" ry="3.5" fill="#fff" opacity="0.3"/>
+        <path d="M78 58 Q83 53 90 56" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+        <path d="M110 56 Q117 53 122 58" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+        <path d="M88 88 Q94 83 100 86 Q106 83 112 88" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="76" cy="82" r="5" fill="#FF9F43" opacity="0.3"/>
+        <circle cx="124" cy="82" r="5" fill="#FF9F43" opacity="0.3"/>
+        <path d="M90 46 L94 42 L98 46" fill="none" stroke="#E8B730" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+        <path d="M102 44 L106 40 L110 44" fill="none" stroke="#E8B730" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+        <text x="100" y="132" text-anchor="middle" style="font-size:12px;fill:var(--t3)">PM at 3am</text>
+      </g>
+      <g style="animation:float 2.5s ease-in-out infinite 0.3s">
+        <path d="M150 20 Q150 5 170 5 L280 5 Q300 5 300 20 L300 95 Q300 110 280 110 L180 110 L160 125 L165 110 L170 110 Q150 110 150 95 Z" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+        <line x1="170" y1="25" x2="205" y2="25" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="165" y="22" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
+        <path d="M167 26 L169 28 L172 24" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="170" y1="40" x2="220" y2="40" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="165" y="37" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
+        <path d="M167 41 L169 43 L172 39" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="170" y1="55" x2="195" y2="55" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="165" y="52" width="8" height="8" rx="2" fill="none" stroke="#1D9E75" stroke-width="1.2"/>
+        <path d="M167 56 L169 58 L172 54" fill="none" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="170" y1="72" x2="210" y2="72" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 3"/>
+        <rect x="165" y="69" width="8" height="8" rx="2" fill="none" stroke="#E24B4A" stroke-width="1.2"/>
+        <line x1="170" y1="88" x2="200" y2="88" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 3"/>
+        <rect x="165" y="85" width="8" height="8" rx="2" fill="none" stroke="#E24B4A" stroke-width="1.2"/>
+        <text x="240" y="76" style="font-size:20px;fill:#E24B4A;opacity:0.7">?</text>
+        <text x="260" y="60" style="font-size:14px;fill:#E24B4A;opacity:0.4">?</text>
+        <text x="275" y="90" style="font-size:18px;fill:#E24B4A;opacity:0.5">?</text>
+      </g>
+      <g style="animation:shake 2.5s ease-in-out infinite 0.8s">
+        <text x="350" y="50" text-anchor="middle" style="font-size:52px;fill:#E24B4A;opacity:0.8">?</text>
+        <text x="380" y="80" text-anchor="middle" style="font-size:32px;fill:#E24B4A;opacity:0.4">?</text>
+        <text x="340" y="100" text-anchor="middle" style="font-size:24px;fill:#E24B4A;opacity:0.25">?</text>
+      </g>
+    </svg>
+  </div>
+</div>
 
-      <div class="slide" id="s1">
-        <div class="big">The old way:<br><span class="bad">painful</span></div>
-        <div class="pres-sub" style="margin-top:12px">Re-interviewing stakeholders is expensive. Manually cross-checking historical docs? Soul-crushing.</div>
-        <div class="scene-art" style="margin-top:8px">
-          <svg width="480" height="200" viewBox="0 0 480 200">
-            <g><rect x="20" y="30" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="28" y="40" width="54" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="50" width="40" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="60" width="48" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="70" width="35" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="80" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="90" width="44" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="100" width="38" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><text x="55" y="136" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 1</text></g>
-            <g transform="translate(80,0)" style="opacity:0.7"><rect x="20" y="35" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="28" y="45" width="54" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="55" width="42" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="65" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="75" width="36" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><text x="55" y="141" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 2</text></g>
-            <g transform="translate(140,0)" style="opacity:0.5"><rect x="20" y="32" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="55" y="82" text-anchor="middle" style="font-size:14px;fill:var(--t3)">...</text><text x="55" y="138" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 847</text></g>
-            <g transform="translate(248,25)">
-              <circle cx="30" cy="38" r="26" fill="#FFD93D" stroke="#E8B730" stroke-width="1.5"/>
-              <circle cx="30" cy="38" r="24" fill="#FFD93D"/>
-              <path d="M20 32 Q22 30 26 33" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
-              <path d="M34 33 Q38 30 40 32" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
-              <ellipse cx="23" cy="35" rx="3.5" ry="1.5" fill="#664400"/>
-              <ellipse cx="37" cy="35" rx="3.5" ry="1.5" fill="#664400"/>
-              <path d="M22 47 L38 47" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="14" cy="46" r="4" fill="#FF9F43" opacity="0.3"/>
-              <circle cx="46" cy="46" r="4" fill="#FF9F43" opacity="0.3"/>
-              <path d="M44 22 Q46 16 48 22" fill="#54A0FF" opacity="0.5"/>
-              <ellipse cx="47" cy="22" rx="2.5" ry="3.5" fill="#54A0FF" opacity="0.4"/>
-              <text x="30" y="82" text-anchor="middle" style="font-size:11px;fill:var(--t3)">You, reading</text>
-              <text x="30" y="95" text-anchor="middle" style="font-size:11px;fill:var(--t3)">every single one</text>
-            </g>
-            <g transform="translate(340,10)"><rect x="0" y="20" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 0.5s both"/><text x="65" y="42" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 0.8s both">Week 1: still reading</text><rect x="0" y="66" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 1.2s both"/><text x="65" y="88" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 1.5s both">Week 2: eyes hurt</text><rect x="0" y="112" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 1.9s both"/><text x="65" y="134" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 2.2s both">Week 3: "good enough"</text></g>
-            <text x="240" y="190" text-anchor="middle" style="font-size:13px;fill:var(--t3);animation:fadeIn 0.5s ease 2.8s both">Spoiler: it wasn't good enough.</text>
-          </svg>
-        </div>
-      </div>
+<div class="slide" id="s1">
+  <div class="big">The old way:<br><span class="bad">painful</span></div>
+  <div class="sub" style="margin-top:12px">Re-interviewing stakeholders is expensive. Manually cross-checking historical docs? Soul-crushing.</div>
+  <div class="scene-art" style="margin-top:8px">
+    <svg width="480" height="200" viewBox="0 0 480 200">
+      <g><rect x="20" y="30" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="28" y="40" width="54" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="50" width="40" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="60" width="48" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="70" width="35" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="80" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="90" width="44" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><rect x="28" y="100" width="38" height="5" rx="2" fill="var(--b2)" opacity="0.5"/><text x="55" y="136" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 1</text></g>
+      <g transform="translate(80,0)" style="opacity:0.7"><rect x="20" y="35" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="28" y="45" width="54" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="55" width="42" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="65" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="28" y="75" width="36" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><text x="55" y="141" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 2</text></g>
+      <g transform="translate(140,0)" style="opacity:0.5"><rect x="20" y="32" width="70" height="90" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="55" y="82" text-anchor="middle" style="font-size:14px;fill:var(--t3)">...</text><text x="55" y="138" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Doc 847</text></g>
+      <g transform="translate(248,25)">
+        <circle cx="30" cy="38" r="26" fill="#FFD93D" stroke="#E8B730" stroke-width="1.5"/>
+        <circle cx="30" cy="38" r="24" fill="#FFD93D"/>
+        <path d="M20 32 Q22 30 26 33" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+        <path d="M34 33 Q38 30 40 32" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="23" cy="35" rx="3.5" ry="1.5" fill="#664400"/>
+        <ellipse cx="37" cy="35" rx="3.5" ry="1.5" fill="#664400"/>
+        <path d="M22 47 L38 47" fill="none" stroke="#664400" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="14" cy="46" r="4" fill="#FF9F43" opacity="0.3"/>
+        <circle cx="46" cy="46" r="4" fill="#FF9F43" opacity="0.3"/>
+        <path d="M44 22 Q46 16 48 22" fill="#54A0FF" opacity="0.5"/>
+        <ellipse cx="47" cy="22" rx="2.5" ry="3.5" fill="#54A0FF" opacity="0.4"/>
+        <text x="30" y="82" text-anchor="middle" style="font-size:11px;fill:var(--t3)">You, reading</text>
+        <text x="30" y="95" text-anchor="middle" style="font-size:11px;fill:var(--t3)">every single one</text>
+      </g>
+      <g transform="translate(340,10)"><rect x="0" y="20" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 0.5s both"/><text x="65" y="42" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 0.8s both">Week 1: still reading</text><rect x="0" y="66" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 1.2s both"/><text x="65" y="88" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 1.5s both">Week 2: eyes hurt</text><rect x="0" y="112" width="130" height="36" rx="18" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5" style="animation:popIn 0.5s ease 1.9s both"/><text x="65" y="134" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#A32D2D;animation:fadeIn 0.3s ease 2.2s both">Week 3: "good enough"</text></g>
+      <text x="240" y="190" text-anchor="middle" style="font-size:13px;fill:var(--t3);animation:fadeIn 0.5s ease 2.8s both">Spoiler: it wasn't good enough.</text>
+    </svg>
+  </div>
+</div>
 
-      <div class="slide" id="s2">
-        <div class="big">"Just use AI!"<br><span class="bad">...not so fast</span></div>
-        <div class="pres-sub" style="margin-top:10px">LLM agents sound great until you hit reality:</div>
-        <div class="card-row" style="margin-top:16px">
-          <div class="fcard" style="animation:slideL 0.4s ease 0.2s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><text x="20" y="26" text-anchor="middle" style="font-size:18px;fill:#E24B4A">!</text></svg><div class="ft" style="color:#A32D2D">Hallucinations</div><div class="fs">Makes up requirements that don't exist</div></div>
-          <div class="fcard" style="animation:slideL 0.4s ease 0.4s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><path d="M14 16 L26 28 M26 16 L14 28" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/></svg><div class="ft" style="color:#A32D2D">Data leakage</div><div class="fs">Your specs go to someone else's cloud</div></div>
-          <div class="fcard" style="animation:slideL 0.4s ease 0.6s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><path d="M12 24 L20 16 L28 24" fill="none" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/><line x1="20" y1="16" x2="20" y2="30" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/></svg><div class="ft" style="color:#A32D2D">Heavy infra</div><div class="fs">GPU servers just to check your docs</div></div>
-        </div>
-      </div>
+<div class="slide" id="s2">
+  <div class="big">Why not just ask an LLM?</div>
+  <div class="sub" style="margin-top:10px">Generation-based approaches have fundamental issues for gap detection:</div>
+  <div class="card-row" style="margin-top:16px">
+    <div class="fcard" style="animation:slideL 0.4s ease 0.2s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><text x="20" y="26" text-anchor="middle" style="font-size:18px;fill:#E24B4A">!</text></svg><div class="ft" style="color:#A32D2D">Hallucination</div><div class="fs">Generates plausible but nonexistent gaps</div></div>
+    <div class="fcard" style="animation:slideL 0.4s ease 0.4s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><path d="M14 16 L26 28 M26 16 L14 28" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/></svg><div class="ft" style="color:#A32D2D">Data leakage risk</div><div class="fs">Sending proprietary specs to external APIs</div></div>
+    <div class="fcard" style="animation:slideL 0.4s ease 0.6s both"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/><rect x="13" y="14" width="14" height="12" rx="2" fill="#E24B4A" opacity="0.15"/><path d="M15 20 L25 20" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round"/><path d="M15 24 L22 24" stroke="#E24B4A" stroke-width="1" stroke-linecap="round" opacity="0.5"/></svg><div class="ft" style="color:#A32D2D">Not reproducible</div><div class="fs">Different run, different gaps flagged</div></div>
+  </div>
+</div>
 
-      <div class="slide" id="s3">
-        <div class="big">What if we used AI<br><span class="blu">the smart way?</span></div>
-        <div class="scene-art" style="margin-top:16px">
-          <svg width="500" height="200" viewBox="0 0 500 200">
-            <g style="animation:popIn 0.4s ease 0.3s both">
-              <rect x="20" y="10" width="140" height="120" rx="14" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/>
-              <rect x="55" y="28" width="70" height="50" rx="8" fill="#E24B4A" opacity="0.12"/>
-              <rect x="65" y="38" width="50" height="8" rx="3" fill="#E24B4A" opacity="0.3"/>
-              <rect x="65" y="50" width="35" height="8" rx="3" fill="#E24B4A" opacity="0.3"/>
-              <rect x="65" y="62" width="45" height="8" rx="3" fill="#E24B4A" opacity="0.3"/>
-              <path d="M58 30 L62 34 M58 34 L62 30" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="30" y1="20" x2="150" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
-              <line x1="150" y1="20" x2="30" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
-              <text x="90" y="100" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#A32D2D">Generation</text>
-              <text x="90" y="114" text-anchor="middle" style="font-size:10px;fill:#A32D2D;opacity:0.7">hallucinations</text>
-            </g>
-            <g style="animation:popIn 0.4s ease 0.5s both">
-              <rect x="180" y="10" width="140" height="120" rx="14" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/>
-              <circle cx="250" cy="48" r="20" fill="#E24B4A" opacity="0.1" stroke="#E24B4A" stroke-width="0.5"/>
-              <path d="M240 42 L245 48 L260 35" fill="none" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-              <line x1="235" y1="55" x2="265" y2="55" stroke="#E24B4A" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
-              <path d="M238 60 Q250 68 262 60" fill="none" stroke="#E24B4A" stroke-width="1" opacity="0.3"/>
-              <line x1="190" y1="20" x2="310" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
-              <line x1="310" y1="20" x2="190" y2="120" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
-              <text x="250" y="100" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#A32D2D">Cloud APIs</text>
-              <text x="250" y="114" text-anchor="middle" style="font-size:10px;fill:#A32D2D;opacity:0.7">data leakage</text>
-            </g>
-            <g style="animation:popIn 0.5s ease 0.8s both">
-              <rect x="340" y="10" width="140" height="120" rx="14" fill="#EBF3FC" stroke="#378ADD" stroke-width="1"/>
-              <circle cx="410" cy="42" r="18" fill="#378ADD" opacity="0.12"/>
-              <circle cx="403" cy="38" r="3" fill="#378ADD" opacity="0.5"/>
-              <circle cx="417" cy="38" r="3" fill="#378ADD" opacity="0.5"/>
-              <circle cx="410" cy="48" r="3" fill="#378ADD" opacity="0.4"/>
-              <path d="M398 34 Q410 28 422 34" fill="none" stroke="#378ADD" stroke-width="1" opacity="0.3"/>
-              <circle cx="395" cy="55" r="2" fill="#378ADD" opacity="0.3"/>
-              <circle cx="410" cy="60" r="2" fill="#378ADD" opacity="0.35"/>
-              <circle cx="425" cy="53" r="2" fill="#378ADD" opacity="0.25"/>
-              <path d="M400 65 Q410 58 420 65" fill="none" stroke="#378ADD" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.4"/>
-              <text x="410" y="96" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0C447C">Embeddings</text>
-              <text x="410" y="110" text-anchor="middle" style="font-size:10px;fill:#4A45A2;opacity:0.8">deep understanding</text>
-              <path d="M396 82 L402 88 L424 68" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/>
-            </g>
-            <text x="250" y="160" text-anchor="middle" style="font-size:16px;font-weight:500;fill:var(--t1);animation:fadeIn 0.5s ease 1.2s both">Keep the brain. Ditch the mouth.</text>
-            <text x="250" y="182" text-anchor="middle" style="font-size:13px;fill:var(--t2);animation:fadeIn 0.5s ease 1.5s both">AI understands your docs — without generating or leaking anything.</text>
-          </svg>
-        </div>
-      </div>
+<div class="slide" id="s3">
+  <div class="big">Our approach:<br><span class="blu">embeddings as geometry</span></div>
+  <div class="scene-art" style="margin-top:16px">
+    <svg width="500" height="200" viewBox="0 0 500 200">
+      <g style="animation:popIn 0.4s ease 0.3s both">
+        <rect x="10" y="10" width="110" height="110" rx="14" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/>
+        <rect x="35" y="28" width="60" height="40" rx="6" fill="#E24B4A" opacity="0.1"/>
+        <rect x="42" y="35" width="46" height="5" rx="2" fill="#E24B4A" opacity="0.3"/>
+        <rect x="42" y="44" width="32" height="5" rx="2" fill="#E24B4A" opacity="0.25"/>
+        <rect x="42" y="53" width="40" height="5" rx="2" fill="#E24B4A" opacity="0.2"/>
+        <line x1="20" y1="20" x2="110" y2="110" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+        <line x1="110" y1="20" x2="20" y2="110" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+        <text x="65" y="94" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#A32D2D">No generation</text>
+        <text x="65" y="108" text-anchor="middle" style="font-size:9px;fill:#A32D2D;opacity:0.7">no hallucination risk</text>
+      </g>
+      <g style="animation:popIn 0.5s ease 0.6s both">
+        <rect x="140" y="10" width="350" height="110" rx="14" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
+        <circle cx="200" cy="60" r="36" fill="#378ADD" opacity="0.04" stroke="#378ADD" stroke-width="0.5" stroke-dasharray="3 2"/>
+        <circle cx="185" cy="48" r="4" fill="#5b8def" opacity="0.6"/>
+        <circle cx="205" cy="42" r="4" fill="#5b8def" opacity="0.6"/>
+        <circle cx="215" cy="58" r="4" fill="#5b8def" opacity="0.5"/>
+        <circle cx="190" cy="68" r="4" fill="#5b8def" opacity="0.5"/>
+        <circle cx="178" cy="60" r="3" fill="#5b8def" opacity="0.35"/>
+        <circle cx="208" cy="72" r="3" fill="#5b8def" opacity="0.35"/>
+        <circle cx="220" cy="48" r="3" fill="#5b8def" opacity="0.3"/>
+        <circle cx="248" cy="52" r="5" fill="#ff2299" opacity="0.8"/>
+        <line x1="220" y1="54" x2="244" y2="52" stroke="#D85A30" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.6"/>
+        <text x="236" y="44" style="font-size:10px;font-weight:500;fill:#D85A30">phi</text>
+        <circle cx="198" cy="82" r="5" fill="#ff2299" opacity="0.7"/>
+        <line x1="205" y1="72" x2="200" y2="78" stroke="#1D9E75" stroke-width="1.5" opacity="0.5"/>
+        <text x="212" y="88" style="font-size:8px;fill:#1D9E75">close!</text>
+        <text x="340" y="32" text-anchor="middle" style="font-size:15px;font-weight:500;fill:#042C53">Embed, then measure</text>
+        <text x="340" y="54" text-anchor="middle" style="font-size:12px;fill:#0C447C">k-NN on <tspan font-weight="500">S^(d-1)</tspan>, d=1024</text>
+        <text x="340" y="74" text-anchor="middle" style="font-size:12px;fill:#0C447C">Per-project <tspan font-weight="500">z-score</tspan></text>
+        <text x="340" y="94" text-anchor="middle" style="font-size:12px;fill:#0C447C">Soft <tspan font-weight="500">Category x Topic</tspan> grid</text>
+        <text x="340" y="112" text-anchor="middle" style="font-size:10px;fill:#185FA5;opacity:0.6">deterministic, auditable</text>
+      </g>
+      <g style="animation:fadeIn 0.5s ease 1.0s both">
+        <rect x="140" y="140" width="110" height="28" rx="14" fill="#378ADD" opacity="0.08"/>
+        <circle cx="155" cy="154" r="4" fill="#5b8def" opacity="0.5"/>
+        <text x="200" y="158" text-anchor="middle" style="font-size:11px;fill:#0C447C">Corpus point</text>
+        <rect x="260" y="140" width="110" height="28" rx="14" fill="#ff2299" opacity="0.08"/>
+        <circle cx="275" cy="154" r="4" fill="#ff2299" opacity="0.5"/>
+        <text x="320" y="158" text-anchor="middle" style="font-size:11px;fill:#ff2299">Your requirement</text>
+        <rect x="380" y="140" width="110" height="28" rx="14" fill="#D85A30" opacity="0.08"/>
+        <line x1="395" y1="154" x2="410" y2="154" stroke="#D85A30" stroke-width="1.5" stroke-dasharray="3 2"/>
+        <text x="455" y="158" text-anchor="middle" style="font-size:11px;fill:#D85A30">Gap distance</text>
+      </g>
+      <text x="250" y="192" text-anchor="middle" style="font-size:14px;font-weight:500;fill:var(--t1);animation:fadeIn 0.5s ease 1.2s both">Embeddings for understanding. Geometry for detection.</text>
+    </svg>
+  </div>
+</div>
 
-      <div class="slide" id="s4">
-        <div class="med">Introducing</div>
-        <div class="big" style="font-size:36px;margin-top:8px"><span class="accent">GapLens</span></div>
-        <div class="pres-sub" style="margin-top:4px">Lightweight. Safe. AI-powered.</div>
-        <div class="scene-art" style="margin-top:16px">
-          <svg width="520" height="140" viewBox="0 0 520 140">
-            <g style="animation:popIn 0.4s ease 0.2s both"><rect x="10" y="10" width="110" height="105" rx="14" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><rect x="35" y="28" width="60" height="40" rx="4" fill="#1D9E75" opacity="0.15" stroke="#1D9E75" stroke-width="0.5"/><rect x="40" y="33" width="50" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="40" y="41" width="35" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="40" y="49" width="42" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="40" y="57" width="28" height="4" rx="1" fill="#1D9E75" opacity="0.3"/><rect x="50" y="68" width="30" height="4" rx="2" fill="#1D9E75" opacity="0.2"/><text x="65" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#085041">100% local</text><text x="65" y="106" text-anchor="middle" style="font-size:10px;fill:#0F6E56">Runs on your laptop</text></g>
-            <g style="animation:popIn 0.4s ease 0.35s both"><rect x="140" y="10" width="110" height="105" rx="14" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><circle cx="195" cy="42" r="18" fill="#1D9E75" opacity="0.12" stroke="#1D9E75" stroke-width="0.5"/><path d="M195 30 L195 42 L204 46" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/><path d="M183 54 Q195 60 207 54" fill="none" stroke="#1D9E75" stroke-width="1" opacity="0.4"/><text x="195" y="46" text-anchor="middle" style="font-size:10px;fill:#1D9E75;opacity:0.6">2s</text><text x="195" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#085041">2 seconds</text><text x="195" y="106" text-anchor="middle" style="font-size:10px;fill:#0F6E56">CPU only, no GPU</text></g>
-            <g style="animation:popIn 0.4s ease 0.5s both"><rect x="270" y="10" width="110" height="105" rx="14" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><path d="M325 28 L325 56 L308 62 L325 62 L325 62 L342 62 Z" fill="#1D9E75" opacity="0.12" stroke="#1D9E75" stroke-width="0.5"/><path d="M320 38 L325 44 L336 32" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/><text x="325" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#085041">No hallucinations</text><text x="325" y="106" text-anchor="middle" style="font-size:10px;fill:#0F6E56">Geometry, not generation</text></g>
-            <g style="animation:popIn 0.4s ease 0.65s both"><rect x="400" y="10" width="110" height="105" rx="14" fill="#EBF3FC" stroke="#378ADD" stroke-width="0.5"/><ellipse cx="455" cy="40" rx="20" ry="16" fill="#378ADD" opacity="0.1" stroke="#378ADD" stroke-width="0.5"/><path d="M443 36 Q448 30 455 36 Q462 30 467 36" fill="none" stroke="#378ADD" stroke-width="1.2" stroke-linecap="round"/><circle cx="448" cy="42" r="2" fill="#378ADD" opacity="0.5"/><circle cx="462" cy="42" r="2" fill="#378ADD" opacity="0.5"/><circle cx="455" cy="50" r="1.5" fill="#378ADD" opacity="0.4"/><path d="M445 48 Q455 55 465 48" fill="none" stroke="#378ADD" stroke-width="0.8" opacity="0.4"/><text x="455" y="92" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#0C447C">AI-enhanced</text><text x="455" y="106" text-anchor="middle" style="font-size:10px;fill:#4A45A2">LLM embeddings</text></g>
-          </svg>
-        </div>
-      </div>
+<div class="slide" id="s4">
+  <div class="med">Introducing</div>
+  <div class="big" style="font-size:36px;margin-top:8px"><span class="accent">GapLens</span></div>
+  <div class="sub" style="margin-top:4px">k-NN geometric gap detection via soft cell aggregation</div>
+  <div class="scene-art" style="margin-top:16px">
+    <svg width="520" height="150" viewBox="0 0 520 150">
+      <defs><marker id="pa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="var(--b2)" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <g style="animation:popIn 0.4s ease 0.2s both">
+        <rect x="10" y="15" width="90" height="70" rx="10" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+        <rect x="22" y="28" width="66" height="5" rx="2" fill="#888780" opacity="0.4"/>
+        <rect x="22" y="38" width="50" height="5" rx="2" fill="#888780" opacity="0.4"/>
+        <rect x="22" y="48" width="58" height="5" rx="2" fill="#888780" opacity="0.4"/>
+        <rect x="22" y="58" width="40" height="5" rx="2" fill="#888780" opacity="0.4"/>
+        <text x="55" y="104" text-anchor="middle" style="font-size:11px;font-weight:500;fill:var(--t2)">Requirements</text>
+      </g>
+      <line x1="105" y1="50" x2="125" y2="50" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 0.4s both"/>
+      <g style="animation:popIn 0.4s ease 0.5s both">
+        <rect x="130" y="15" width="90" height="70" rx="10" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+        <circle cx="160" cy="40" r="3.5" fill="#378ADD" opacity="0.5"/>
+        <circle cx="175" cy="46" r="3.5" fill="#378ADD" opacity="0.4"/>
+        <circle cx="190" cy="38" r="3.5" fill="#378ADD" opacity="0.4"/>
+        <circle cx="170" cy="55" r="2.5" fill="#378ADD" opacity="0.3"/>
+        <circle cx="185" cy="52" r="2.5" fill="#378ADD" opacity="0.3"/>
+        <text x="175" y="104" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0C447C">Embed (d=1024)</text>
+      </g>
+      <line x1="225" y1="50" x2="245" y2="50" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 0.7s both"/>
+      <g style="animation:popIn 0.4s ease 0.8s both">
+        <rect x="250" y="15" width="90" height="70" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+        <circle cx="280" cy="38" r="3.5" fill="#D85A30" opacity="0.4"/>
+        <circle cx="295" cy="44" r="3.5" fill="#D85A30" opacity="0.5"/>
+        <circle cx="310" cy="36" r="3.5" fill="#D85A30" opacity="0.4"/>
+        <circle cx="290" cy="55" r="10" fill="none" stroke="#E24B4A" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+        <text x="295" y="104" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#993C1D">k-NN gaps (k=1)</text>
+      </g>
+      <line x1="345" y1="50" x2="365" y2="50" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 1.0s both"/>
+      <g style="animation:popIn 0.4s ease 1.1s both">
+        <rect x="370" y="15" width="60" height="70" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+        <rect x="378" y="28" width="18" height="9" rx="2" fill="#534AB7" opacity="0.2"/>
+        <rect x="400" y="28" width="18" height="9" rx="2" fill="#534AB7" opacity="0.1"/>
+        <rect x="378" y="40" width="18" height="9" rx="2" fill="#534AB7" opacity="0.1"/>
+        <rect x="400" y="40" width="18" height="9" rx="2" fill="#534AB7" opacity="0.25"/>
+        <rect x="378" y="52" width="18" height="9" rx="2" fill="#534AB7" opacity="0.08"/>
+        <rect x="400" y="52" width="18" height="9" rx="2" fill="#534AB7" opacity="0.15"/>
+        <text x="400" y="104" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#26215C">Aggregate</text>
+      </g>
+      <line x1="435" y1="50" x2="448" y2="50" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 1.3s both"/>
+      <g style="animation:popIn 0.4s ease 1.4s both">
+        <rect x="453" y="15" width="60" height="70" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+        <rect x="461" y="28" width="44" height="7" rx="3" fill="#E24B4A" opacity="0.25"/>
+        <rect x="461" y="38" width="34" height="7" rx="3" fill="#EF9F27" opacity="0.25"/>
+        <rect x="461" y="48" width="40" height="7" rx="3" fill="#1D9E75" opacity="0.2"/>
+        <rect x="461" y="58" width="28" height="7" rx="3" fill="#1D9E75" opacity="0.15"/>
+        <text x="483" y="104" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#085041">Report</text>
+      </g>
+      <text x="260" y="135" text-anchor="middle" style="font-size:13px;fill:var(--t3);animation:fadeIn 0.5s ease 1.6s both">Deterministic. Reproducible. Auditable.</text>
+    </svg>
+  </div>
+</div>
 
-      <div class="slide" id="s5">
-        <div class="big">How it works<br><span style="font-size:16px;color:var(--t2)">(the 30-second version)</span></div>
-        <div class="scene-art" style="margin-top:12px">
-          <svg width="500" height="180" viewBox="0 0 500 180">
-            <g style="animation:popIn 0.4s ease 0.2s both"><rect x="10" y="20" width="90" height="70" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><rect x="22" y="34" width="66" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="22" y="44" width="50" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="22" y="54" width="58" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><rect x="22" y="64" width="40" height="5" rx="2" fill="var(--b2)" opacity="0.4"/><text x="55" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:var(--t2)">Your docs</text></g>
-            <line x1="105" y1="55" x2="135" y2="55" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 0.5s both"/>
-            <g style="animation:popIn 0.4s ease 0.6s both"><rect x="140" y="25" width="90" height="60" rx="10" fill="#EBF3FC" stroke="#378ADD" stroke-width="0.5"/><circle cx="165" cy="46" r="4" fill="#378ADD" opacity="0.4"/><circle cx="180" cy="52" r="4" fill="#378ADD" opacity="0.5"/><circle cx="195" cy="42" r="4" fill="#378ADD" opacity="0.4"/><circle cx="175" cy="60" r="3" fill="#378ADD" opacity="0.3"/><circle cx="200" cy="56" r="3" fill="#378ADD" opacity="0.3"/><text x="185" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0C447C">AI embeddings</text></g>
-            <line x1="235" y1="55" x2="265" y2="55" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 0.9s both"/>
-            <g style="animation:popIn 0.4s ease 1.0s both"><rect x="270" y="25" width="90" height="60" rx="10" fill="#FDF0EB" stroke="#D85A30" stroke-width="0.5"/><circle cx="295" cy="44" r="4" fill="#D85A30" opacity="0.4"/><circle cx="315" cy="50" r="4" fill="#D85A30" opacity="0.5"/><circle cx="330" cy="40" r="4" fill="#D85A30" opacity="0.4"/><circle cx="305" cy="58" r="12" fill="none" stroke="#E24B4A" stroke-width="1" stroke-dasharray="2 2"/><text x="315" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#993C1D">Geometry finds gaps</text></g>
-            <line x1="365" y1="55" x2="395" y2="55" stroke="var(--b2)" stroke-width="1" marker-end="url(#pa)" style="animation:fadeIn 0.3s ease 1.3s both"/>
-            <g style="animation:popIn 0.4s ease 1.4s both"><rect x="400" y="20" width="90" height="70" rx="10" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/><rect x="412" y="34" width="66" height="8" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="412" y="46" width="50" height="8" rx="3" fill="#EF9F27" opacity="0.3"/><rect x="412" y="58" width="58" height="8" rx="3" fill="#1D9E75" opacity="0.3"/><rect x="412" y="70" width="44" height="8" rx="3" fill="#1D9E75" opacity="0.3"/><text x="445" y="110" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#085041">Ranked report</text></g>
-            <text x="250" y="148" text-anchor="middle" style="font-size:13px;fill:var(--t3)">Your docs in. Ranked gap report out. That's it.</text>
-            <text x="250" y="170" text-anchor="middle" style="font-size:15px;font-weight:500;fill:#D85A30">Under 2 seconds. On your laptop.</text>
-            <defs><marker id="pa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="var(--b2)" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
-          </svg>
-        </div>
+<div class="slide" id="s5" style="padding:20px 16px">
+  <div class="big">How gap detection works</div>
+  <div style="margin-top:12px;max-width:560px;width:100%">
+    <div id="steps6">
+      <div class="s6step on" data-step="0">
+        <svg width="520" height="110" viewBox="0 0 520 110">
+          <defs><marker id="ars6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+          <rect x="20" y="10" width="220" height="28" rx="14" fill="#ff2299" opacity="0.07" stroke="#ff2299" stroke-width="0.5"/>
+          <text x="130" y="28" text-anchor="middle" style="font-size:10px;fill:#ff2299;font-style:italic">"System shall encrypt data at rest"</text>
+          <line x1="245" y1="24" x2="280" y2="24" stroke="var(--b2)" stroke-width="1" marker-end="url(#ars6)"/>
+          <rect x="286" y="10" width="90" height="28" rx="8" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+          <text x="331" y="28" text-anchor="middle" style="font-size:10px;font-weight:500;fill:#0C447C">Qwen3</text>
+          <line x1="380" y1="24" x2="415" y2="24" stroke="var(--b2)" stroke-width="1" marker-end="url(#ars6)"/>
+          <circle cx="440" cy="24" r="8" fill="#ff2299" opacity="0.15" stroke="#ff2299" stroke-width="0.5"/>
+          <circle cx="440" cy="24" r="3" fill="#ff2299" opacity="0.6"/>
+          <text x="460" y="28" style="font-size:10px;fill:#ff2299;font-weight:500">g(r)</text>
+          <text x="20" y="62" style="font-size:11px;fill:var(--t2)">Encode each requirement into an <tspan fill="#378ADD" font-weight="500">embedding point</tspan></text>
+        </svg>
       </div>
+      <div class="s6step" data-step="1">
+        <svg width="520" height="110" viewBox="0 0 520 110">
+          <circle cx="80" cy="50" r="30" fill="none" stroke="#378ADD" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.25"/>
+          <circle cx="64" cy="38" r="4" fill="#5b8def" opacity="0.55"/>
+          <circle cx="84" cy="34" r="4" fill="#5b8def" opacity="0.55"/>
+          <circle cx="70" cy="56" r="4" fill="#5b8def" opacity="0.55"/>
+          <circle cx="94" cy="54" r="4" fill="#5b8def" opacity="0.55"/>
+          <circle cx="58" cy="50" r="3" fill="#5b8def" opacity="0.3"/>
+          <circle cx="98" cy="38" r="3" fill="#5b8def" opacity="0.3"/>
+          <text x="80" y="88" text-anchor="middle" style="font-size:9px;fill:#0C447C">reference corpus</text>
+          <circle cx="160" cy="46" r="6" fill="#ff2299" opacity="0.8"/>
+          <line x1="100" y1="46" x2="154" y2="46" stroke="#D85A30" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#ars6)"/>
+          <text x="128" y="40" text-anchor="middle" style="font-size:12px;font-weight:500;fill:#D85A30">phi</text>
+          <rect x="200" y="14" width="120" height="22" rx="11" fill="#1D9E75" opacity="0.08"/>
+          <text x="260" y="29" text-anchor="middle" style="font-size:10px;fill:#1D9E75;font-weight:500">phi small = covered</text>
+          <rect x="330" y="14" width="120" height="22" rx="11" fill="#E24B4A" opacity="0.08"/>
+          <text x="390" y="29" text-anchor="middle" style="font-size:10px;fill:#E24B4A;font-weight:500">phi large = deficit</text>
+          <text x="200" y="58" style="font-size:11px;fill:var(--t2)">Measure distance, <tspan fill="#D85A30" font-weight="500">z-score</tspan> against training projects</text>
+        </svg>
+      </div>
+      <div class="s6step" data-step="2">
+        <svg width="520" height="130" viewBox="0 0 520 130">
+          <text x="102" y="14" text-anchor="middle" style="font-size:8px;fill:var(--t3)">Encrypt.</text>
+          <text x="140" y="14" text-anchor="middle" style="font-size:8px;fill:var(--t3)">Auth</text>
+          <text x="178" y="14" text-anchor="middle" style="font-size:8px;fill:var(--t3)">Data</text>
+          <text x="216" y="14" text-anchor="middle" style="font-size:8px;fill:var(--t3)">Backup</text>
+          <text x="82" y="34" text-anchor="end" style="font-size:9px;fill:#ff2299;font-weight:500">Security</text>
+          <text x="82" y="56" text-anchor="end" style="font-size:9px;fill:var(--t2)">Perform.</text>
+          <text x="82" y="78" text-anchor="end" style="font-size:9px;fill:var(--t2)">Portability</text>
+          <rect x="86" y="24" width="32" height="18" rx="3" fill="#E24B4A" opacity="0.35"/><text x="102" y="37" text-anchor="middle" style="font-size:9px;font-weight:500;fill:#791F1F">2.1</text>
+          <rect x="124" y="24" width="32" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><text x="140" y="37" text-anchor="middle" style="font-size:9px;font-weight:500;fill:#854F0B">0.6</text>
+          <rect x="162" y="24" width="32" height="18" rx="3" fill="#EF9F27" opacity="0.2"/><text x="178" y="37" text-anchor="middle" style="font-size:9px;fill:#854F0B">0.4</text>
+          <rect x="200" y="24" width="32" height="18" rx="3" fill="#1D9E75" opacity="0.12"/><text x="216" y="37" text-anchor="middle" style="font-size:9px;fill:#085041">0.1</text>
+          <rect x="86" y="46" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <rect x="124" y="46" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <rect x="162" y="46" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <rect x="200" y="46" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <rect x="86" y="68" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <rect x="124" y="68" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <rect x="162" y="68" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <rect x="200" y="68" width="32" height="18" rx="3" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/>
+          <path d="M80 24 L76 18" stroke="#ff2299" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
+          <text x="72" y="14" text-anchor="end" style="font-size:8px;fill:#ff2299;opacity:0.5">h(r)</text>
+          <line x1="102" y1="8" x2="102" y2="22" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.5"/>
+          <line x1="140" y1="8" x2="140" y2="22" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.35"/>
+          <line x1="178" y1="8" x2="178" y2="22" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.25"/>
+          <text x="260" y="40" style="font-size:11px;fill:var(--t2)">Assign scores to</text>
+          <text x="260" y="60" style="font-size:11px;fill:var(--t2)"><tspan fill="#534AB7" font-weight="500">Category x Topic</tspan> cells</text>
+        </svg>
+      </div>
+      <div class="s6step" data-step="3">
+        <svg width="520" height="110" viewBox="0 0 520 110">
+          <rect x="20" y="10" width="480" height="32" rx="6" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+          <rect x="26" y="16" width="120" height="20" rx="4" fill="#E24B4A" opacity="0.2"/><text x="86" y="30" text-anchor="middle" style="font-size:10px;font-weight:500;fill:#A32D2D">Security / Encrypt. = 2.1</text>
+          <rect x="152" y="16" width="120" height="20" rx="4" fill="#E24B4A" opacity="0.12"/><text x="212" y="30" text-anchor="middle" style="font-size:10px;font-weight:500;fill:#A32D2D">Portability / Auth = 1.8</text>
+          <rect x="278" y="16" width="110" height="20" rx="4" fill="#EF9F27" opacity="0.12"/><text x="333" y="30" text-anchor="middle" style="font-size:10px;font-weight:500;fill:#854F0B">Perform. / Data = 1.2</text>
+          <rect x="394" y="16" width="100" height="20" rx="4" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.3"/><text x="444" y="30" text-anchor="middle" style="font-size:10px;fill:var(--t3)">...</text>
+          <text x="20" y="66" style="font-size:11px;fill:var(--t2)"><tspan fill="#E24B4A" font-weight="500">High score</tspan> = gap, <tspan fill="#1D9E75" font-weight="500">low score</tspan> = covered</text>
+          <text x="20" y="86" style="font-size:11px;fill:var(--t2)">Entire missing categories <tspan fill="#534AB7" font-weight="500">collapsed</tspan> into single findings</text>
+        </svg>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:12px;justify-content:center">
+      <div id="s6pills" style="display:flex;gap:6px"></div>
+      <button id="s6btn" onclick="nextS6()" style="background:transparent;border:0.5px solid var(--b2);border-radius:var(--r);padding:6px 16px;font-size:12px;color:var(--t1);cursor:pointer;font-family:var(--f);margin-left:8px">Next step &rarr;</button>
+    </div>
+  </div>
+</div>
 
-      <div class="slide" id="s6" style="position:relative;padding:0">
-        <canvas id="cv3d" class="cv3"></canvas>
-        <div class="s3ov"><h2>Seeing the gaps in 3D</h2><p>Each requirement becomes a point in space. Clusters form around topics. Red lines reveal where your project has blind spots.</p></div>
-        <div class="s3hint">Drag to orbit / scroll to zoom</div>
-        <div class="s3leg" id="leg3d"><span><i style="background:#5b8def"></i> Known topics</span><span><i class="dia" style="background:#ff2299"></i> Your project</span><span><i style="background:#e74c3c;border-radius:0;width:10px;height:2px"></i> Gap</span></div>
-        <div class="eqbar" id="eq3d"><span id="eqK3d"></span></div>
-      </div>
+<style>
+.s6step{display:none;animation:sIn 0.4s ease both}
+.s6step.on{display:block}
+.s6pill{display:flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid var(--b3);color:var(--t3);background:transparent;transition:all 0.2s}
+.s6pill.on{border-color:var(--ti);color:var(--ti);background:var(--bgi)}
+</style>
+<script>
+var s6cur=0,s6labels=['1. Sentence encoding','2. k-NN distance','3. Aggregation grid','4. Gap ranking'];
+var s6colors=['#378ADD','#D85A30','#534AB7','#1D9E75'];
+function initS6(){var c=document.getElementById('s6pills');c.innerHTML='';s6labels.forEach(function(l,i){var p=document.createElement('div');p.className='s6pill'+(i===s6cur?' on':'');p.textContent=l;p.onclick=function(){s6cur=i;updS6()};c.appendChild(p)});updS6()}
+function updS6(){var steps=document.querySelectorAll('.s6step');steps.forEach(function(s,i){s.className='s6step'+(i===s6cur?' on':'')});var pills=document.querySelectorAll('.s6pill');pills.forEach(function(p,i){p.className='s6pill'+(i===s6cur?' on':'')});var btn=document.getElementById('s6btn');btn.textContent=s6cur<3?'Next step \u2192':'Restart \u21BB'}
+function nextS6(){s6cur=s6cur<3?s6cur+1:0;updS6()}
+setTimeout(initS6,100);
+</script>
 
-      <div class="slide" id="s7" style="padding:0">
-        <div id="cDual"></div>
-      </div>
+<div class="slide" id="s6" style="position:relative;padding:0">
+  <canvas id="cv3d" class="cv3"></canvas>
+  <div class="s3ov"><h2>Seeing the gaps in 3D</h2><p>Each requirement becomes a point in space. Clusters form around topics. Red lines reveal where your project has blind spots.</p></div>
+  <div class="s3hint">Drag to orbit / scroll to zoom</div>
+  <div class="s3leg" id="leg3d"><span><i style="background:#5b8def"></i> Known topics</span><span><i class="dia" style="background:#ff2299"></i> Your project</span><span><i style="background:#e74c3c;border-radius:0;width:10px;height:2px"></i> Gap</span></div>
+  <div class="eqbar" id="eq3d"><span id="eqK3d"></span></div>
+</div>
 
-      <div class="slide" id="s8">
-        <div class="big">Open the <span class="accent">black box</span></div>
-        <div class="pres-sub" style="margin-top:8px">Unlike LLM chat, every gap has a visual explanation you can inspect, verify, and trust.</div>
-        <div class="scene-art" style="margin-top:14px">
-          <svg width="440" height="160" viewBox="0 0 440 160">
-            <g style="animation:popIn 0.4s ease 0.3s both"><rect x="10" y="10" width="200" height="130" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="110" y="30" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t2)">Gap heatmap</text><rect x="30" y="42" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.25"/><rect x="75" y="42" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="120" y="42" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.3"/><rect x="165" y="42" width="30" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="30" y="65" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="75" y="65" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="120" y="65" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.35"/><rect x="165" y="65" width="30" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="30" y="88" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.35"/><rect x="75" y="88" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="120" y="88" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.15"/><rect x="165" y="88" width="30" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="30" y="111" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="75" y="111" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="120" y="111" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="165" y="111" width="30" height="18" rx="3" fill="#1D9E75" opacity="0.15"/></g>
-            <g style="animation:popIn 0.4s ease 0.6s both"><rect x="230" y="10" width="200" height="130" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="330" y="30" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t2)">Ranked findings</text><rect x="245" y="42" width="170" height="22" rx="4" fill="#E24B4A" opacity="0.15" stroke="#E24B4A" stroke-width="0.5" stroke-opacity="0.3"/><text x="255" y="57" style="font-size:11px;fill:#A32D2D">1. Missing: Security / Encryption</text><rect x="245" y="68" width="170" height="22" rx="4" fill="#E24B4A" opacity="0.1" stroke="#E24B4A" stroke-width="0.5" stroke-opacity="0.2"/><text x="255" y="83" style="font-size:11px;fill:#A32D2D">2. Missing: Portability / Backups</text><rect x="245" y="94" width="170" height="22" rx="4" fill="#EF9F27" opacity="0.1" stroke="#EF9F27" stroke-width="0.5" stroke-opacity="0.2"/><text x="255" y="109" style="font-size:11px;fill:#854F0B">3. Partial: Performance / Data</text><text x="330" y="132" text-anchor="middle" style="font-size:10px;fill:var(--t3)">+ example requirements from corpus</text></g>
-          </svg>
-        </div>
-      </div>
+<div class="slide" id="s7" style="padding:0">
+  <div id="cDual"></div>
+</div>
 
-      <div class="slide" id="s9">
-        <div class="big">Your dataset.<br>Your rules.<br><span class="good">Your machine.</span></div>
-        <div class="scene-art" style="margin-top:16px">
-          <svg width="480" height="180" viewBox="0 0 480 180">
-            <g style="animation:popIn 0.4s ease 0.2s both">
-              <rect x="15" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
-              <rect x="45" y="26" width="40" height="30" rx="4" fill="#E24B4A" opacity="0.12"/>
-              <path d="M65 30 L65 50" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
-              <path d="M55 40 L75 40" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
-              <text x="65" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Healthcare</text>
-              <text x="65" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">HIPAA safe</text>
-            </g>
-            <g style="animation:popIn 0.4s ease 0.35s both">
-              <rect x="130" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
-              <rect x="158" y="24" width="44" height="34" rx="3" fill="#EF9F27" opacity="0.12" stroke="#EF9F27" stroke-width="0.5"/>
-              <rect x="163" y="30" width="34" height="4" rx="1" fill="#EF9F27" opacity="0.35"/>
-              <rect x="163" y="38" width="24" height="4" rx="1" fill="#EF9F27" opacity="0.25"/>
-              <rect x="163" y="46" width="30" height="4" rx="1" fill="#EF9F27" opacity="0.2"/>
-              <text x="180" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Finance</text>
-              <text x="180" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Audit ready</text>
-            </g>
-            <g style="animation:popIn 0.4s ease 0.5s both">
-              <rect x="245" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
-              <path d="M280 28 L295 28 L310 45 L300 52 L280 52 L270 45 Z" fill="#378ADD" opacity="0.1" stroke="#378ADD" stroke-width="0.5"/>
-              <circle cx="290" cy="40" r="5" fill="#378ADD" opacity="0.2"/>
-              <path d="M285 40 L288 43 L296 36" fill="none" stroke="#378ADD" stroke-width="1.2" stroke-linecap="round"/>
-              <text x="295" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Defense</text>
-              <text x="295" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Air-gapped OK</text>
-            </g>
-            <g style="animation:popIn 0.4s ease 0.65s both">
-              <rect x="360" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
-              <circle cx="410" cy="36" r="12" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="0.5"/>
-              <circle cx="410" cy="36" r="6" fill="#9b59b6" opacity="0.15"/>
-              <circle cx="410" cy="36" r="2" fill="#9b59b6" opacity="0.3"/>
-              <line x1="410" y1="48" x2="410" y2="56" stroke="#9b59b6" stroke-width="1" opacity="0.3"/>
-              <text x="410" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Automotive</text>
-              <text x="410" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">ISO 26262</text>
-            </g>
-            <text x="240" y="130" text-anchor="middle" style="font-size:14px;fill:var(--t2);animation:fadeIn 0.5s ease 1s both">Bring your own docs. The pipeline adapts.</text>
-            <g style="animation:fadeIn 0.5s ease 1.3s both">
-              <rect x="105" y="145" width="90" height="26" rx="13" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/>
-              <text x="150" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Flexible</text>
-              <rect x="205" y="145" width="90" height="26" rx="13" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/>
-              <text x="250" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Private</text>
-              <rect x="305" y="145" width="90" height="26" rx="13" fill="#E8F5EE" stroke="#1D9E75" stroke-width="0.5"/>
-              <text x="350" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Transparent</text>
-            </g>
-          </svg>
-        </div>
-      </div>
+<div class="slide" id="s8">
+  <div class="big">Open the <span class="accent">black box</span></div>
+  <div class="sub" style="margin-top:8px">Unlike LLM chat, every gap has a visual explanation you can inspect, verify, and trust.</div>
+  <div class="scene-art" style="margin-top:14px">
+    <svg width="440" height="160" viewBox="0 0 440 160">
+      <g style="animation:popIn 0.4s ease 0.3s both"><rect x="10" y="10" width="200" height="130" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="110" y="30" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t2)">Gap heatmap</text><rect x="30" y="42" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.25"/><rect x="75" y="42" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="120" y="42" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.3"/><rect x="165" y="42" width="30" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="30" y="65" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="75" y="65" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="120" y="65" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.35"/><rect x="165" y="65" width="30" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="30" y="88" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.35"/><rect x="75" y="88" width="40" height="18" rx="3" fill="#E24B4A" opacity="0.3"/><rect x="120" y="88" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.15"/><rect x="165" y="88" width="30" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="30" y="111" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="75" y="111" width="40" height="18" rx="3" fill="#EF9F27" opacity="0.25"/><rect x="120" y="111" width="40" height="18" rx="3" fill="#1D9E75" opacity="0.2"/><rect x="165" y="111" width="30" height="18" rx="3" fill="#1D9E75" opacity="0.15"/></g>
+      <g style="animation:popIn 0.4s ease 0.6s both"><rect x="230" y="10" width="200" height="130" rx="10" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/><text x="330" y="30" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t2)">Ranked findings</text><rect x="245" y="42" width="170" height="22" rx="4" fill="#E24B4A" opacity="0.15" stroke="#E24B4A" stroke-width="0.5" stroke-opacity="0.3"/><text x="255" y="57" style="font-size:11px;fill:#A32D2D">1. Missing: Security / Encryption</text><rect x="245" y="68" width="170" height="22" rx="4" fill="#E24B4A" opacity="0.1" stroke="#E24B4A" stroke-width="0.5" stroke-opacity="0.2"/><text x="255" y="83" style="font-size:11px;fill:#A32D2D">2. Missing: Portability / Backups</text><rect x="245" y="94" width="170" height="22" rx="4" fill="#EF9F27" opacity="0.1" stroke="#EF9F27" stroke-width="0.5" stroke-opacity="0.2"/><text x="255" y="109" style="font-size:11px;fill:#854F0B">3. Partial: Performance / Data</text><text x="330" y="132" text-anchor="middle" style="font-size:10px;fill:var(--t3)">+ example requirements from corpus</text></g>
+    </svg>
+  </div>
+</div>
 
-      <div class="slide" id="s10">
-        <div class="big" style="font-size:28px">Stop guessing.<br>Start <span class="good">measuring</span>.</div>
-        <div class="scene-art" style="margin-top:20px">
-          <svg width="360" height="90" viewBox="0 0 360 90"><g style="animation:pulseBtn 2s ease-in-out infinite"><rect x="80" y="15" width="200" height="55" rx="27" fill="#E8F5EE" stroke="#1D9E75" stroke-width="1"/><text x="180" y="48" text-anchor="middle" style="font-size:18px;font-weight:500;fill:#0F6E56">Try GapLens today</text></g></svg>
-        </div>
-        <div class="pres-sub" style="margin-top:6px">Lightweight. Private. Explainable. AI-powered.<br>Requirement gap detection that actually works.</div>
-        <div style="margin-top:18px;text-align:center">
-          <span class="pill pill-g">No cloud</span>
-          <span class="pill pill-g">No GPU</span>
-          <span class="pill pill-g">No hallucinations</span>
-          <span class="pill pill-b">LLM embeddings</span>
-          <span class="pill pill-b">2 seconds</span>
-        </div>
-      </div>
+<div class="slide" id="s9">
+  <div class="big">Your dataset.<br>Your rules.<br><span class="good">Your machine.</span></div>
+  <div class="scene-art" style="margin-top:16px">
+    <svg width="480" height="180" viewBox="0 0 480 180">
+      <g style="animation:popIn 0.4s ease 0.2s both">
+        <rect x="15" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+        <rect x="45" y="26" width="40" height="30" rx="4" fill="#E24B4A" opacity="0.12"/>
+        <path d="M65 30 L65 50" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M55 40 L75 40" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+        <text x="65" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Healthcare</text>
+        <text x="65" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">HIPAA safe</text>
+      </g>
+      <g style="animation:popIn 0.4s ease 0.35s both">
+        <rect x="130" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+        <rect x="158" y="24" width="44" height="34" rx="3" fill="#EF9F27" opacity="0.12" stroke="#EF9F27" stroke-width="0.5"/>
+        <rect x="163" y="30" width="34" height="4" rx="1" fill="#EF9F27" opacity="0.35"/>
+        <rect x="163" y="38" width="24" height="4" rx="1" fill="#EF9F27" opacity="0.25"/>
+        <rect x="163" y="46" width="30" height="4" rx="1" fill="#EF9F27" opacity="0.2"/>
+        <text x="180" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Finance</text>
+        <text x="180" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Audit ready</text>
+      </g>
+      <g style="animation:popIn 0.4s ease 0.5s both">
+        <rect x="245" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+        <path d="M280 28 L295 28 L310 45 L300 52 L280 52 L270 45 Z" fill="#378ADD" opacity="0.1" stroke="#378ADD" stroke-width="0.5"/>
+        <circle cx="290" cy="40" r="5" fill="#378ADD" opacity="0.2"/>
+        <path d="M285 40 L288 43 L296 36" fill="none" stroke="#378ADD" stroke-width="1.2" stroke-linecap="round"/>
+        <text x="295" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Defense</text>
+        <text x="295" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">Air-gapped OK</text>
+      </g>
+      <g style="animation:popIn 0.4s ease 0.65s both">
+        <rect x="360" y="10" width="100" height="95" rx="12" fill="var(--bg2)" stroke="var(--b3)" stroke-width="0.5"/>
+        <circle cx="410" cy="36" r="12" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="0.5"/>
+        <circle cx="410" cy="36" r="6" fill="#9b59b6" opacity="0.15"/>
+        <circle cx="410" cy="36" r="2" fill="#9b59b6" opacity="0.3"/>
+        <line x1="410" y1="48" x2="410" y2="56" stroke="#9b59b6" stroke-width="1" opacity="0.3"/>
+        <text x="410" y="76" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--t1)">Automotive</text>
+        <text x="410" y="92" text-anchor="middle" style="font-size:10px;fill:var(--t3)">ISO 26262</text>
+      </g>
+      <text x="240" y="130" text-anchor="middle" style="font-size:14px;fill:var(--t2);animation:fadeIn 0.5s ease 1s both">Bring your own docs. The pipeline adapts.</text>
+      <g style="animation:fadeIn 0.5s ease 1.3s both">
+        <rect x="105" y="145" width="90" height="26" rx="13" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="150" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Flexible</text>
+        <rect x="205" y="145" width="90" height="26" rx="13" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="250" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Private</text>
+        <rect x="305" y="145" width="90" height="26" rx="13" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="350" y="162" text-anchor="middle" style="font-size:11px;font-weight:500;fill:#0F6E56">Transparent</text>
+      </g>
+    </svg>
+  </div>
+</div>
 
-      <div class="nav">
-        <button id="pb" onclick="go(-1)">&larr; Back</button>
-        <div><div class="dots" id="dts"></div><div class="sn" id="sl"></div></div>
-        <button id="nb" onclick="go(1)">Next &rarr;</button>
-      </div>
+<div class="slide" id="s10">
+  <div class="big">What we learned</div>
+  <div class="scene-art" style="margin-top:20px">
+    <svg width="520" height="260" viewBox="0 0 520 260">
+      <g style="animation:fadeIn 0.4s ease 0.2s both">
+        <circle cx="30" cy="20" r="14" fill="#D85A30" opacity="0.12"/>
+        <text x="30" y="25" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#D85A30">1</text>
+        <text x="52" y="18" style="font-size:15px;font-weight:500;fill:var(--t1)"><tspan fill="#D85A30">Ground-truth category labels</tspan> enable</text>
+        <text x="52" y="36" style="font-size:15px;fill:var(--t1)">centroid-based assignment (78.3% accuracy)</text>
+      </g>
+      <line x1="30" y1="50" x2="500" y2="50" stroke="var(--b3)" stroke-width="0.5" style="animation:fadeIn 0.3s ease 0.35s both"/>
+      <g style="animation:fadeIn 0.4s ease 0.4s both">
+        <circle cx="30" cy="72" r="14" fill="#378ADD" opacity="0.12"/>
+        <text x="30" y="77" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#378ADD">2</text>
+        <text x="52" y="70" style="font-size:15px;font-weight:500;fill:var(--t1)"><tspan fill="#378ADD">Gap detection in full d=1024</tspan> — UMAP</text>
+        <text x="52" y="88" style="font-size:15px;fill:var(--t1)">only for topic clustering, not for k-NN scoring</text>
+      </g>
+      <line x1="30" y1="102" x2="500" y2="102" stroke="var(--b3)" stroke-width="0.5" style="animation:fadeIn 0.3s ease 0.55s both"/>
+      <g style="animation:fadeIn 0.4s ease 0.6s both">
+        <circle cx="30" cy="124" r="14" fill="#1D9E75" opacity="0.12"/>
+        <text x="30" y="129" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#1D9E75">3</text>
+        <text x="52" y="122" style="font-size:15px;font-weight:500;fill:var(--t1)"><tspan fill="#1D9E75">k = 1</tspan> is optimal — AUROC decays monotonically</text>
+        <text x="52" y="140" style="font-size:15px;fill:var(--t1)">from <tspan fill="#1D9E75" font-weight="500">0.87</tspan> (k=1) to 0.39 (k=20) for N>=50 projects</text>
+      </g>
+      <line x1="30" y1="154" x2="500" y2="154" stroke="var(--b3)" stroke-width="0.5" style="animation:fadeIn 0.3s ease 0.75s both"/>
+      <g style="animation:fadeIn 0.4s ease 0.8s both">
+        <circle cx="30" cy="176" r="14" fill="#534AB7" opacity="0.12"/>
+        <text x="30" y="181" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#534AB7">4</text>
+        <text x="52" y="174" style="font-size:15px;font-weight:500;fill:var(--t1)"><tspan fill="#534AB7">Soft topic assignment</tspan> eliminates outlier</text>
+        <text x="52" y="192" style="font-size:15px;fill:var(--t1)">loss — every requirement contributes to every topic</text>
+      </g>
+      <line x1="30" y1="206" x2="500" y2="206" stroke="var(--b3)" stroke-width="0.5" style="animation:fadeIn 0.3s ease 0.95s both"/>
+      <g style="animation:fadeIn 0.4s ease 1.0s both">
+        <circle cx="30" cy="224" r="14" fill="#E24B4A" opacity="0.12"/>
+        <text x="30" y="229" text-anchor="middle" style="font-size:13px;font-weight:500;fill:#E24B4A">5</text>
+        <text x="52" y="222" style="font-size:15px;font-weight:500;fill:var(--t1)"><tspan fill="#E24B4A">Per-project normalisation</tspan> prevents false</text>
+        <text x="52" y="240" style="font-size:15px;fill:var(--t1)">alarms on inherently sparse requirement categories</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div class="slide" id="s11">
+  <div class="big">Built different</div>
+  <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;justify-content:center;max-width:560px">
+    <div style="flex:1;min-width:140px;background:#E1F5EE;border:0.5px solid #1D9E75;border-radius:14px;padding:18px 16px;text-align:center;animation:popIn 0.4s ease 0.2s both">
+      <svg width="44" height="44" viewBox="0 0 44 44"><path d="M22 4 L22 28 L8 34 L22 34 L36 34 Z" fill="#1D9E75" opacity="0.15" stroke="#1D9E75" stroke-width="0.8"/><path d="M17 16 L21 21 L29 12" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <div style="font-size:16px;font-weight:500;color:#085041;margin-top:6px">Safe</div>
+      <div style="font-size:12px;color:#0F6E56;margin-top:4px;line-height:1.4">100% local deployment. Your data never leaves your machine. Zero telemetry.</div>
+    </div>
+    <div style="flex:1;min-width:140px;background:#FAECE7;border:0.5px solid #D85A30;border-radius:14px;padding:18px 16px;text-align:center;animation:popIn 0.4s ease 0.35s both">
+      <svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="18" r="12" fill="#D85A30" opacity="0.08"/><circle cx="22" cy="18" r="7" fill="#D85A30" opacity="0.06"/><circle cx="22" cy="18" r="3" fill="#D85A30" opacity="0.15"/><circle cx="17" cy="15" r="2.5" fill="#D85A30" opacity="0.4"/><circle cx="27" cy="15" r="2.5" fill="#D85A30" opacity="0.4"/><line x1="12" y1="32" x2="32" y2="32" stroke="#D85A30" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.3"/></svg>
+      <div style="font-size:16px;font-weight:500;color:#712B13;margin-top:6px">Transparent</div>
+      <div style="font-size:12px;color:#993C1D;margin-top:4px;line-height:1.4">Every gap score is auditable. Visual heatmaps explain every finding.</div>
+    </div>
+    <div style="flex:1;min-width:140px;background:#E6F1FB;border:0.5px solid #378ADD;border-radius:14px;padding:18px 16px;text-align:center;animation:popIn 0.4s ease 0.5s both">
+      <svg width="44" height="44" viewBox="0 0 44 44"><rect x="6" y="8" width="20" height="16" rx="3" fill="#378ADD" opacity="0.1" stroke="#378ADD" stroke-width="0.5"/><rect x="10" y="12" width="12" height="3" rx="1" fill="#378ADD" opacity="0.3"/><rect x="10" y="18" width="8" height="3" rx="1" fill="#378ADD" opacity="0.2"/><path d="M28 16 L34 16" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/><path d="M32 13 L35 16 L32 19" fill="none" stroke="#378ADD" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/><rect x="18" y="22" width="20" height="16" rx="3" fill="#378ADD" opacity="0.06" stroke="#378ADD" stroke-width="0.5" stroke-dasharray="2 2"/></svg>
+      <div style="font-size:16px;font-weight:500;color:#042C53;margin-top:6px">Flexible</div>
+      <div style="font-size:12px;color:#0C447C;margin-top:4px;line-height:1.4">Any domain, any format. Bring your own dataset and the pipeline adapts.</div>
+    </div>
+  </div>
+  <div style="max-width:520px;margin-top:14px;background:#EEEDFE;border:0.5px solid #534AB7;border-radius:14px;padding:16px 22px;display:flex;align-items:center;gap:16px;animation:popIn 0.5s ease 0.7s both">
+    <svg width="48" height="48" viewBox="0 0 48 48" style="flex-shrink:0"><circle cx="20" cy="24" r="14" fill="#534AB7" opacity="0.06"/><circle cx="15" cy="20" r="3" fill="#534AB7" opacity="0.35"/><circle cx="25" cy="20" r="3" fill="#534AB7" opacity="0.35"/><path d="M17 28 Q20 32 23 28" fill="none" stroke="#534AB7" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/><path d="M36 18 L40 22 L36 26" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/><path d="M40 18 L44 22 L40 26" fill="none" stroke="#534AB7" stroke-width="1" stroke-linecap="round" opacity="0.2"/></svg>
+    <div>
+      <div style="font-size:16px;font-weight:500;color:#26215C">Works with modern AI agents</div>
+      <div style="font-size:12px;color:#3C3489;margin-top:3px;line-height:1.4">MCP wrapper shares analysis results, never raw data. Your docs stay local — agents get the insights they need.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="s12">
+  <div class="big" style="font-size:28px">Stop guessing.<br>Start <span class="good">measuring</span>.</div>
+  <div class="scene-art" style="margin-top:20px">
+    <svg width="360" height="90" viewBox="0 0 360 90"><g style="animation:pulse 2s ease-in-out infinite"><rect x="80" y="15" width="200" height="55" rx="27" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/><text x="180" y="48" text-anchor="middle" style="font-size:18px;font-weight:500;fill:#0F6E56">Try GapLens today</text></g></svg>
+  </div>
+  <div class="sub" style="margin-top:6px">Lightweight. Private. Explainable. AI-powered.<br>Requirement gap detection that actually works.</div>
+  <div style="margin-top:18px;text-align:center">
+    <span class="pill pill-g">No cloud</span>
+    <span class="pill pill-g">No GPU</span>
+    <span class="pill pill-g">No hallucinations</span>
+    <span class="pill pill-b">LLM embeddings</span>
+    <span class="pill pill-b">2 seconds</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button id="pb" onclick="go(-1)">&larr; Back</button>
+  <div><div class="dots" id="dts"></div><div class="sn" id="sl"></div></div>
+  <button id="nb" onclick="go(1)">Next &rarr;</button>
+</div>
+
     </div>
 
   </div>
@@ -574,6 +789,23 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
   </div>
 </section>
 
+<!-- ─── CITATION ─── -->
+<section class="cite-section" id="cite">
+  <div class="cite-inner">
+    <div class="sec-label" data-anim>Citation</div>
+    <div class="sec-title" data-anim>Reference this work</div>
+    <p class="sec-sub" data-anim>If you use GapLens in your research or project, please cite us.</p>
+    <div class="cite-block" data-anim id="bibtex">@article{yang2026geogap,
+  title     = {Detecting Underspecification in Software Requirements
+               via $k$-NN Coverage Geometry},
+  author    = {Yang, Wenyan and Janovec, Tom{\'a}{\v{s}} and Bavautdin, Samantha},
+  year      = {2026},
+  note      = {Project page: \url{https://uenian33.github.io/gaplens/}},
+  url       = {https://github.com/GPT-Laboratory/DiveAI_Case-16-Visualizing-the-Requirements-Space},
+}<button class="cite-copy" id="copyBtn" onclick="copyBib()">Copy</button></div>
+  </div>
+</section>
+
 <!-- ─── FOOTER ─── -->
 <footer class="footer">
   <a href="#">DiveAI</a> &middot; GapLens &middot; COMP.CS.530-2025-2026-2
@@ -583,6 +815,16 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// Copy BibTeX
+function copyBib(){
+  var bib=document.getElementById('bibtex').textContent.replace('Copy','').replace('Copied!','').trim();
+  navigator.clipboard.writeText(bib).then(function(){
+    var btn=document.getElementById('copyBtn');
+    btn.textContent='Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied')},2000);
+  });
+}
+
 // Topbar scroll effect
 var topbar=document.getElementById('topbar');
 window.addEventListener('scroll',function(){topbar.classList.toggle('scrolled',window.scrollY>20)});
@@ -661,11 +903,12 @@ window.addEventListener('scroll',function(){topbar.classList.toggle('scrolled',w
 var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:0.15});
 document.querySelectorAll('[data-anim]').forEach(function(el,i){el.style.transitionDelay=(i%4)*0.1+'s';obs.observe(el)});
 
-// === PRESENTATION ENGINE (from gaplens_combined) ===
-var BG3=0xf5f5f0;
+// === PRESENTATION ENGINE (from slides.html) ===
+var dk=matchMedia('(prefers-color-scheme:dark)').matches;
+var BG3=dk?0x1a1a1a:0xf5f5f0;
 var YC=0xff2299,YH='#ff2299';
-var N=11,cur=0,autoOn=false,autoT=null;
-var titles=['The problem','The old way','AI problems','The smart way','GapLens','How it works','Gap detection','Smart filtering','Explainable','Your data','CTA'];
+var N=13,cur=0,autoOn=false,autoT=null;
+var titles=['The problem','The old way','Why not LLMs','Our approach','GapLens','The mechanism','Gap detection','Smart filtering','Explainable','Your data','Key findings','The framework','CTA'];
 
 // === 3D ENGINE (main scene) ===
 var mainR,mainS,mainCam,mainClock,mainGroups={},mainTweens=[];
@@ -679,7 +922,7 @@ function boot3d(){
   mainR.setPixelRatio(Math.min(devicePixelRatio,2));mainR.setSize(W,H);mainR.setClearColor(BG3);
   mainS=new THREE.Scene();mainCam=new THREE.PerspectiveCamera(50,W/H,0.1,200);
   mainCam.position.set(0,2,14);mainCam.lookAt(0,0,0);
-  mainS.add(new THREE.AmbientLight(0xaaaaaa));
+  mainS.add(new THREE.AmbientLight(dk?0x666666:0xaaaaaa));
   var dl=new THREE.DirectionalLight(0xffffff,0.5);dl.position.set(5,8,5);mainS.add(dl);
   mainClock=new THREE.Clock();
   cv.addEventListener('pointerdown',function(e){isDrag=true;prevM={x:e.clientX,y:e.clientY}});
@@ -712,7 +955,7 @@ function getYour(){if(yPts)return yPts;yPts=[];var cls=getRef();var covC=cls[2];
 function buildGapScene(){
   clr3d();boot3d();camD=14;sph.theta=0.3;sph.phi=Math.PI/2.8;uMC();
   var root=new THREE.Group();mainGroups.root=root;mainS.add(root);
-  root.add(new THREE.Mesh(new THREE.SphereGeometry(4,48,48),new THREE.MeshBasicMaterial({color:0xddddd5,wireframe:true,transparent:true,opacity:0.09})));
+  root.add(new THREE.Mesh(new THREE.SphereGeometry(4,48,48),new THREE.MeshBasicMaterial({color:dk?0x2a2a2a:0xddddd5,wireframe:true,transparent:true,opacity:0.09})));
   var cls=getRef();var centroids=cls.map(function(c){return clusterCentroid(c.pts)});
   cls.forEach(function(c,ci){var cen=centroids[ci];c.pts.forEach(function(p,pi){var mat=new THREE.MeshPhongMaterial({color:c.def.col,transparent:true,opacity:0});var m=new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),mat);m.position.set(p.x,p.y,p.z);root.add(m);mainTweens.push(tw(mat,'opacity',0,0.65,0.1+ci*0.08+pi*0.015))});lbl(root,c.def.label,cen.x,cen.y+1.5,cen.z,'#'+c.def.col.toString(16).padStart(6,'0'),0.2+ci*0.08)});
   var yp=getYour();var covPts=yp.filter(function(p){return p.group==='covered'});var isoPts=yp.filter(function(p){return p.group==='isolated'});var isoCen=clusterCentroid(isoPts);
@@ -733,7 +976,7 @@ var dualR=[],dualS=[],dualC=[],dualCk=[],dualTw=[[],[]],dualDr=[{active:false,pr
 var dualInit=false;
 function bootDual(){
   if(dualInit)return;dualInit=true;
-  for(var i=0;i<2;i++){var cv=document.getElementById('dcv'+i);var W=cv.clientWidth||300,H=cv.clientHeight||250;var r=new THREE.WebGLRenderer({canvas:cv,antialias:true});r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(W,H);r.setClearColor(BG3);var s=new THREE.Scene();var cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);cam.position.set(0,1.5,7);cam.lookAt(0,0,0);s.add(new THREE.AmbientLight(0xaaaaaa));var dl=new THREE.DirectionalLight(0xffffff,0.5);dl.position.set(3,5,3);s.add(dl);dualR.push(r);dualS.push(s);dualC.push(cam);dualCk.push(new THREE.Clock());
+  for(var i=0;i<2;i++){var cv=document.getElementById('dcv'+i);var W=cv.clientWidth||300,H=cv.clientHeight||250;var r=new THREE.WebGLRenderer({canvas:cv,antialias:true});r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(W,H);r.setClearColor(BG3);var s=new THREE.Scene();var cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);cam.position.set(0,1.5,7);cam.lookAt(0,0,0);s.add(new THREE.AmbientLight(dk?0x666666:0xaaaaaa));var dl=new THREE.DirectionalLight(0xffffff,0.5);dl.position.set(3,5,3);s.add(dl);dualR.push(r);dualS.push(s);dualC.push(cam);dualCk.push(new THREE.Clock());
   (function(idx,cvE){cvE.addEventListener('pointerdown',function(e){dualDr[idx].active=true;dualDr[idx].prev={x:e.clientX,y:e.clientY}});window.addEventListener('pointerup',function(){dualDr[0].active=false;dualDr[1].active=false});window.addEventListener('pointermove',function(e){for(var j=0;j<2;j++){if(!dualDr[j].active)continue;var dd=dualDr[j];dd.sph.theta-=(e.clientX-dd.prev.x)*0.007;dd.sph.phi=Math.max(0.4,Math.min(2.7,dd.sph.phi-(e.clientY-dd.prev.y)*0.007));dd.prev={x:e.clientX,y:e.clientY};udC(j)}});cvE.addEventListener('wheel',function(e){e.preventDefault();dualDr[idx].dist=Math.max(3,Math.min(15,dualDr[idx].dist+e.deltaY*0.01));udC(idx)},{passive:false})})(i,cv)}
   requestAnimationFrame(rafDual);
 }
