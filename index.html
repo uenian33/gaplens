@@ -95,7 +95,7 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
 .title .lens{color:var(--t1)}
 .subtitle{font-size:clamp(16px,2vw,20px);font-weight:300;color:var(--t2);max-width:480px;text-align:center;line-height:1.6;margin-bottom:28px;animation:fadeUp 0.7s ease 0.55s both;position:relative;z-index:1}
 .hero-links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;animation:fadeUp 0.7s ease 0.6s both;position:relative;z-index:1}
-.hero-link{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:13.5px;font-weight:500;text-decoration:none;transition:all 0.25s;cursor:default}
+.hero-link{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:13.5px;font-weight:500;text-decoration:none;transition:all 0.25s;cursor:pointer}
 .hero-link-primary{background:var(--p1);color:var(--w);border:1.5px solid var(--p1)}
 .hero-link-outline{background:var(--w);color:var(--t1);border:1.5px solid rgba(15,23,42,0.12)}
 .hero-link .soon-tag{font-size:9.5px;font-weight:600;letter-spacing:0.5px;padding:2px 7px;border-radius:4px;background:rgba(220,83,40,0.1);color:var(--coral)}
@@ -223,8 +223,8 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
   <div class="topbar-nav">
     <a href="#overview" class="nav-link">Overview</a>
     <a href="#demo" class="nav-link">How it works</a>
-    <a href="#" class="nav-link" onclick="event.preventDefault();alert('Report coming soon!')">Report <span class="coming-badge">SOON</span></a>
-    <a href="#" class="nav-primary" onclick="event.preventDefault();alert('Source code coming soon!')">Code <span class="coming-badge">SOON</span></a>
+    <a href="https://github.com/uenian33/gaplens/blob/main/LLM2026_embedding_analysis.pdf" target="_blank" class="nav-link">Report</a>
+    <a href="https://github.com/GPT-Laboratory/DiveAI_Case-16-Visualizing-the-Requirements-Space/tree/data_analysis_research_questions" target="_blank" class="nav-primary">Code</a>
   </div>
 </nav>
 
@@ -238,8 +238,8 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
   <div class="title"><span class="gap">Gap</span><span class="lens">Lens</span></div>
   <div class="subtitle">AI-Powered Requirement Gap Detection</div>
   <div class="hero-links">
-    <a class="hero-link hero-link-primary" href="#">Source Code <span class="soon-tag">COMING SOON</span></a>
-    <a class="hero-link hero-link-outline" href="#">Full Report <span class="soon-tag">COMING SOON</span></a>
+    <a class="hero-link hero-link-primary" href="https://github.com/GPT-Laboratory/DiveAI_Case-16-Visualizing-the-Requirements-Space/tree/data_analysis_research_questions" target="_blank">Source Code</a>
+    <a class="hero-link hero-link-outline" href="https://github.com/uenian33/gaplens/blob/main/LLM2026_embedding_analysis.pdf" target="_blank">Full Report</a>
   </div>
   <div class="pills">
     <span class="pill pill-g">Local</span>
@@ -569,8 +569,8 @@ body{font-family:var(--f);background:var(--w);color:var(--t1);overflow-x:hidden;
   <h2 data-anim>Stop guessing. Start measuring.</h2>
   <p data-anim>Requirement gap detection that actually works.</p>
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative" data-anim>
-    <a href="#" class="cta-btn" onclick="event.preventDefault();alert('Source code coming soon!')" style="background:var(--w);color:var(--p1)">Source Code <span style="font-size:11px;opacity:0.5;margin-left:4px">— coming soon</span></a>
-    <a href="#" class="cta-btn" onclick="event.preventDefault();alert('Report coming soon!')" style="background:rgba(255,255,255,0.12);color:var(--w);border:1.5px solid rgba(255,255,255,0.25)">Full Report <span style="font-size:11px;opacity:0.5;margin-left:4px">— coming soon</span></a>
+    <a href="https://github.com/GPT-Laboratory/DiveAI_Case-16-Visualizing-the-Requirements-Space/tree/data_analysis_research_questions" target="_blank" class="cta-btn" style="background:var(--w);color:var(--p1)">Source Code</a>
+    <a href="https://github.com/uenian33/gaplens/blob/main/LLM2026_embedding_analysis.pdf" target="_blank" class="cta-btn" style="background:rgba(255,255,255,0.12);color:var(--w);border:1.5px solid rgba(255,255,255,0.25)">Full Report</a>
   </div>
 </section>
 
